@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using loaforcsSoundAPI.Core.Data;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
+
+namespace loaforcsSoundAPI.LethalCompany.Conditions.Moon;
+
 [SoundAPICondition("LethalCompany:weather:name")] 
 public class WeatherNameCondition : Condition
 {
