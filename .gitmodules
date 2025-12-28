@@ -1,0 +1,3 @@
+[submodule "loaforcsSoundAPI"]
+	path = loaforcsSoundAPI
+	url = https://github.com/loaforcsSoundAPI/loaforcsSoundAPI.git

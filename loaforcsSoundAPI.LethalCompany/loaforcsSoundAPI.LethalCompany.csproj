@@ -64,9 +64,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="me.loaforc.soundapi">
-        <HintPath>..\me.loaforc.soundapi.dll</HintPath>
-      </Reference>
+        <ProjectReference Include="..\loaforcsSoundAPI\loaforcsSoundAPI\loaforcsSoundAPI.csproj">
+            <PrivateAssets>all</PrivateAssets>
+            <Project>{DEBBEFBD-97F6-4276-AEA8-9466118ECFBA}</Project>
+            <Name>loaforcsSoundAPI</Name>
+            <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+        </ProjectReference>
     </ItemGroup>
     <Target Name="PackThunderstore" AfterTargets="PostBuildEvent" Condition="$(Configuration) == 'Release'">
         <Exec Command="dotnet tcli build --config-path &quot;$(ProjectDir)Thunderstore/config.toml&quot; --package-version $(Version)"  />
