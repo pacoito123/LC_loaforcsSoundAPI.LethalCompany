@@ -13,7 +13,7 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <RootNamespace>loaforcsSoundAPI.LethalCompany</RootNamespace>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>preview</LangVersion>
     </PropertyGroup>
 
     <!-- Set NuGet Sources -->
@@ -40,14 +40,24 @@
         <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
     </PropertyGroup>
 
+    <!-- Enable 'Nullable' types. -->
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
     <!-- Primary Package References -->
     <ItemGroup>
-        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
-        <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1" PrivateAssets="all"/>
-        <PackageReference Include="BepInEx.Core" Version="5.*" PrivateAssets="all"/>
+        <PackageReference Include="Microsoft.Unity.Analyzers" Version="1.*">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
+        <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.*" PrivateAssets="all" />
+        <PackageReference Include="BepInEx.BaseLib" Version="5.*" PrivateAssets="all" Publicize="true" />
+        <PackageReference Include="BepInEx.Core" Version="5.*" PrivateAssets="all" />
         <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" PrivateAssets="all"/>
-        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="*-*" Publicize="true" PrivateAssets="all"/>
-        <PackageReference Include="UnityEngine.Modules" Version="2022.3.9" IncludeAssets="compile" PrivateAssets="all"/>
+        <PackageReference Include="UnityEngine.Modules" Version="2022.3.62" IncludeAssets="compile" PrivateAssets="all" />
+        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="73.0.0-ngd.0" PrivateAssets="all" />
     </ItemGroup>
 
     <!-- Other mods -->
@@ -72,7 +82,7 @@
         </ProjectReference>
     </ItemGroup>
     <Target Name="PackThunderstore" AfterTargets="PostBuildEvent" Condition="$(Configuration) == 'Release'">
-        <Exec Command="dotnet tcli build --config-path &quot;$(ProjectDir)Thunderstore/config.toml&quot; --package-version $(Version)"  />
+        <Exec Command="dotnet tcli build --config-path &quot;$(ProjectDir)Thunderstore/config.toml&quot; --package-version $(Version)" />
     </Target>
 
     <Target Name="PublishThunderstore">
