@@ -5,3 +5,4 @@ Packages/**
 .idea/
 loaforcsSoundAPI.sln.DotSettings.user
 *.csproj.user
+*/managed/**

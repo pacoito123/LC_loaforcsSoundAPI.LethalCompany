@@ -20,7 +20,7 @@ public class PlayerLocationCondition : Condition<PlayerContext> {
 		if(context.Player.isInsideFactory) {
 			return Value == LocationType.INSIDE;
 		}
-		if(StartOfRound.Instance.shipBounds.bounds.Contains(context.Player.transform.position)) {
+		if(context.Player.isInHangarShipRoom) {
 			return Value == LocationType.ON_SHIP;
 		}
 		return Value == LocationType.OUTSIDE;

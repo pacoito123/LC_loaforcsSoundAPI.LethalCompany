@@ -62,9 +62,13 @@
 
     <!-- Other mods -->
     <ItemGroup>
-        <PackageReference Include="IAmBatby.LethalLevelLoader" Version="1.4.0" />
+        <Reference Include="LethalLevelLoader">
+            <PrivateAssets>all</PrivateAssets>
+            <Publicize>true</Publicize>
+            <HintPath>managed\LethalLevelLoader.dll</HintPath>
+        </Reference>
     </ItemGroup>
-    
+
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all"/>
     </ItemGroup>

@@ -11,21 +11,23 @@ public class AudioReverbCondition : Condition {
 
 	[CanBeNull]
 	public string Name { get; private set; } = null;
-	
+
 	public override bool Evaluate(IContext context) {
 		if (!GameNetworkManager.Instance) return false;
 		PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
 		if (!player) return false;
 		if (!player.reverbPreset) return false;
-		
-		if (HasEcho != null) {
-			if (HasEcho == player.reverbPreset.hasEcho) return true;
+
+		bool? result = null;
+
+		if (HasEcho != null && result != false) {
+			result = HasEcho != player.reverbPreset.hasEcho;
 		}
 
-		if (Name != null) {
-			if (string.Equals(Name, player.reverbPreset.name, StringComparison.InvariantCultureIgnoreCase)) return true;
+		if (Name != null && result != false) {
+			result = string.Equals(Name, player.reverbPreset.name, StringComparison.InvariantCultureIgnoreCase);
 		}
 
-		return false;
+		return result == true;
 	}
 }
