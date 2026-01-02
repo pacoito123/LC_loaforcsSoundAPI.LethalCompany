@@ -2,7 +2,6 @@
 using loaforcsSoundAPI.LethalCompany.Conditions;
 using loaforcsSoundAPI.LethalCompany.Reporting;
 using loaforcsSoundAPI.Reporting;
-using loaforcsSoundAPI.Core.Util.Extensions;
 
 namespace loaforcsSoundAPI.LethalCompany.Patches;
 
@@ -15,10 +14,10 @@ static class StartOfRoundPatch {
 
 	[HarmonyPostfix, HarmonyPatch(nameof(StartOfRound.Awake)), HarmonyWrapSafe]
 	static void ReportFootstepSurfaces() {
-		if(SoundReportHandler.CurrentReport == null) return;
+		if (SoundReportHandler.CurrentReport == null) return;
 
 		foreach (FootstepSurface surface in StartOfRound.Instance.footstepSurfaces) {
-			LethalCompanySoundReport.foundFootstepSurfaces.AddUnique(surface);
+			LethalCompanySoundReport.foundFootstepSurfaces.Add(surface);
 		}
 	}
 

@@ -1,8 +1,6 @@
-﻿using GameNetcodeStuff;
-using HarmonyLib;
+﻿using HarmonyLib;
 using loaforcsSoundAPI.LethalCompany.Reporting;
 using loaforcsSoundAPI.Reporting;
-using loaforcsSoundAPI.Core.Util.Extensions;
 
 namespace loaforcsSoundAPI.LethalCompany.Patches;
 
@@ -10,9 +8,9 @@ namespace loaforcsSoundAPI.LethalCompany.Patches;
 static class AudioReverbTriggerPatch {
 	[HarmonyPatch(nameof(AudioReverbTrigger.ChangeAudioReverbForPlayer)), HarmonyPostfix, HarmonyWrapSafe]
 	static void LogFoundReverbPreset(AudioReverbTrigger __instance) {
-		if(SoundReportHandler.CurrentReport == null) return;
-		if(__instance.reverbPreset == null) return;
-		
-		LethalCompanySoundReport.foundReverbPresets.AddUnique(__instance.reverbPreset);
+		if (SoundReportHandler.CurrentReport == null) return;
+		if (__instance.reverbPreset == null) return;
+
+		LethalCompanySoundReport.foundReverbPresets.Add(__instance.reverbPreset);
 	}
 }

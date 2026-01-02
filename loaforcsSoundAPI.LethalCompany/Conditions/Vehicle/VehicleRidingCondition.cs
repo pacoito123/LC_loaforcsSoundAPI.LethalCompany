@@ -14,7 +14,7 @@ public class VehicleRidingCondition : Condition<VehicleContext> {
         IN_FRONT
     }
 
-    public RiderType Value { get; internal set; }
+    public RiderType Value { get; private set; }
 
     protected override bool EvaluateWithContext(VehicleContext context) {
         if (!GameNetworkManager.Instance) return false;

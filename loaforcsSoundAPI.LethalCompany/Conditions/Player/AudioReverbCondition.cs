@@ -10,7 +10,7 @@ public class AudioReverbCondition : Condition {
 	public bool? HasEcho { get; private set; } = null;
 
 	[CanBeNull]
-	public string Name { get; private set; } = null;
+	public string Value { get; private set; } = null;
 
 	public override bool Evaluate(IContext context) {
 		if (!GameNetworkManager.Instance) return false;
@@ -24,8 +24,8 @@ public class AudioReverbCondition : Condition {
 			result = HasEcho != player.reverbPreset.hasEcho;
 		}
 
-		if (Name != null && result != false) {
-			result = string.Equals(Name, player.reverbPreset.name, StringComparison.InvariantCultureIgnoreCase);
+		if (Value != null && result != false) {
+			result = string.Equals(Value, player.reverbPreset.name, StringComparison.InvariantCultureIgnoreCase);
 		}
 
 		return result == true;
