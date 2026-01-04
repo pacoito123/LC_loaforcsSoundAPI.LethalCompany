@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using LethalLevelLoader;
+using loaforcsSoundAPI.LethalCompany.Compatibility;
 using loaforcsSoundAPI.LethalCompany.Conditions;
 using loaforcsSoundAPI.LethalCompany.Conditions.Player;
 using loaforcsSoundAPI.LethalCompany.Conditions.Ship;
@@ -37,32 +35,10 @@ static class LethalCompanySoundReport {
 			SoundReportHandler.WriteEnum<ShipStateCondition.ShipStateType>("Ship State Types", stream);
 			SoundReportHandler.WriteEnum<VehicleRidingCondition.RiderType>("Vehicle Riding Types", stream);
 
-			if (loaforcsSoundAPILethalCompany.CheckSoftDep(LethalLevelLoader.Plugin.ModGUID)) {
-				WriteLLLDataToReport(stream);
+			if (LethalLevelLoaderCompatibility.Enabled) {
+				LethalLevelLoaderCompatibility.WriteLLLDataToReport(stream);
 			}
 		});
-	}
-
-	[MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
-	static void WriteLLLDataToReport(StreamWriter stream) {
-		List<string> tags = [];
-		// i kinda really don't like this
-		loaforcsSoundAPILethalCompany.Logger.LogDebug("writing lll data!!");
-		List<ExtendedMod> mods = PatchedContent.ExtendedMods.ToList();
-		mods.Add(PatchedContent.VanillaMod);
-		foreach (ExtendedMod mod in mods) {
-			foreach (ExtendedContent content in mod.ExtendedContents) {
-				tags.AddRange(
-					content.ContentTags.Select(
-						it => it.contentTagName
-					).Where(
-						it => !tags.Contains(it)
-					)
-				);
-			}
-		}
-
-		SoundReportHandler.WriteList("Found Lethal Level Loader Tags (CASE-SENSITIVE)", stream, tags);
 	}
 
 	static string ReverbPresetToHumanReadable(ReverbPreset preset) {
