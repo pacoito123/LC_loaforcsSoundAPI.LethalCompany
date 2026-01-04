@@ -25,7 +25,7 @@ public class EnemyBehaviourStateCondition : Condition<EnemyContext> {
 
         bool? result = null;
 
-        if (EnemyName != null) {
+        if (EnemyName != null && context.EnemyType != null) {
             result = string.Equals(EnemyName, context.EnemyType.enemyName, StringComparison.InvariantCultureIgnoreCase);
         }
 
@@ -41,7 +41,7 @@ public class EnemyBehaviourStateCondition : Condition<EnemyContext> {
     }
 
 	public override List<IValidatable.ValidationResult> Validate() {
-		if (!ValidateRangeOperator(StateIndex, out IValidatable.ValidationResult result))
+		if (StateIndex != null && !ValidateRangeOperator(StateIndex, out IValidatable.ValidationResult result))
 			return [result];
 		return [];
 	}

@@ -39,9 +39,9 @@ public class PlayerFearCondition : Condition {
     }
 
     public override List<IValidatable.ValidationResult> Validate() {
-        if (!ValidateRangeOperator(Value, out IValidatable.ValidationResult result))
+        if (Value != null && !ValidateRangeOperator(Value, out IValidatable.ValidationResult result))
             return [result];
-        if (!ValidateRangeOperator(TimeSinceIncrease, out result))
+        if (TimeSinceIncrease != null && !ValidateRangeOperator(TimeSinceIncrease, out result))
             return [result];
         return [];
     }
