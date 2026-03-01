@@ -11,24 +11,19 @@ public class PlayerLocationCondition : Condition<PlayerContext> {
 		ON_SHIP,
 		OUTSIDE
 	}
-    
+
 	public LocationType Value { get; internal set; }
 
 	protected override bool EvaluateWithContext(PlayerContext context) {
-		if(!context.Player) return false;
-		if(context.Player.isPlayerDead) return false;
-		if(context.Player.isInsideFactory) {
-			return Value == LocationType.INSIDE;
-		}
-		if(context.Player.isInHangarShipRoom) {
-			return Value == LocationType.ON_SHIP;
-		}
-		return Value == LocationType.OUTSIDE;
+		return context.Player != null && !context.Player.isPlayerDead
+			&& (context.Player.isInsideFactory ? Value == LocationType.INSIDE
+			: context.Player.isInHangarShipRoom ? Value == LocationType.ON_SHIP
+			: Value == LocationType.OUTSIDE);
 	}
 
 	protected override bool EvaluateFallback(IContext context) {
-		if (!GameNetworkManager.Instance) return false;
-		return EvaluateWithContext(new PlayerContext(GameNetworkManager.Instance.localPlayerController));
+		return GameNetworkManager.Instance != null && GameNetworkManager.Instance.localPlayerController != null
+			&& EvaluateWithContext(new PlayerContext(GameNetworkManager.Instance.localPlayerController));
 	}
 	// todo: validate
 }

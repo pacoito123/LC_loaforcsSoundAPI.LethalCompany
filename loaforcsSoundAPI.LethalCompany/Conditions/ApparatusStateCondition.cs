@@ -1,6 +1,4 @@
-﻿using System;
-using JetBrains.Annotations;
-using loaforcsSoundAPI.SoundPacks.Data.Conditions;
+﻿using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 
 namespace loaforcsSoundAPI.LethalCompany.Conditions;
 
@@ -15,8 +13,6 @@ public class ApparatusStateCondition : Condition {
 	public StateType? Value { get; internal set; }
 
 	public override bool Evaluate(IContext context) {
-		StateType state = CurrentApparatusPulled ? StateType.PULLED : StateType.PLUGGED_IN;
-		
-		return state == (Value ?? StateType.PULLED);
+		return (CurrentApparatusPulled ? StateType.PULLED : StateType.PLUGGED_IN) == (Value ?? StateType.PULLED);
 	}
 }

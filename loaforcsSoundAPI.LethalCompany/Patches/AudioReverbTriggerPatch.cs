@@ -8,9 +8,9 @@ namespace loaforcsSoundAPI.LethalCompany.Patches;
 static class AudioReverbTriggerPatch {
 	[HarmonyPatch(nameof(AudioReverbTrigger.ChangeAudioReverbForPlayer)), HarmonyPostfix, HarmonyWrapSafe]
 	static void LogFoundReverbPreset(AudioReverbTrigger __instance) {
-		if (SoundReportHandler.CurrentReport == null) return;
-		if (__instance.reverbPreset == null) return;
+		if(SoundReportHandler.CurrentReport == null) return;
+		if(__instance.reverbPreset == null) return;
 
-		LethalCompanySoundReport.foundReverbPresets.Add(__instance.reverbPreset);
+		_ = LethalCompanySoundReport.foundReverbPresets.Add(__instance.reverbPreset);
 	}
 }

@@ -19,30 +19,27 @@ public class EnemyBehaviourStateCondition : Condition<EnemyContext> {
     public string StateIndex { get; private set; } = null;
 
     protected override bool EvaluateWithContext(EnemyContext context) {
-        if (!context.Enemy) return false;
-        if (!context.Enemy.enemyType) return false;
-        if (context.Enemy.currentBehaviourState == null) return false;
+        if(context.Enemy == null || context.Enemy.enemyType == null || context.Enemy.currentBehaviourState == null) return false;
 
         bool? result = null;
 
-        if (EnemyName != null && context.EnemyType != null) {
+        if(EnemyName != null && context.EnemyType != null) {
             result = string.Equals(EnemyName, context.EnemyType.enemyName, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        if (StateName != null) {
+        if(StateName != null) {
             result = string.Equals(StateName, context.Enemy.currentBehaviourState.name, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        if (StateIndex != null) {
+        if(StateIndex != null) {
             result = EvaluateRangeOperator(context.Enemy.currentBehaviourStateIndex, StateIndex);
         }
 
         return result == true;
     }
 
-	public override List<IValidatable.ValidationResult> Validate() {
-		if (StateIndex != null && !ValidateRangeOperator(StateIndex, out IValidatable.ValidationResult result))
-			return [result];
-		return [];
-	}
+    public override List<IValidatable.ValidationResult> Validate() {
+        return StateIndex != null && !ValidateRangeOperator(StateIndex, out IValidatable.ValidationResult result)
+            ? [result] : [];
+    }
 }

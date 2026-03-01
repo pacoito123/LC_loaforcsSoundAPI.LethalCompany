@@ -13,18 +13,17 @@ public class AudioReverbCondition : Condition {
 	public string Value { get; private set; } = null;
 
 	public override bool Evaluate(IContext context) {
-		if (!GameNetworkManager.Instance) return false;
+		if(GameNetworkManager.Instance == null) return false;
 		PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
-		if (!player) return false;
-		if (!player.reverbPreset) return false;
+		if(player == null || player.reverbPreset == null) return false;
 
 		bool? result = null;
 
-		if (HasEcho != null && result != false) {
+		if(HasEcho != null && result != false) {
 			result = HasEcho != player.reverbPreset.hasEcho;
 		}
 
-		if (Value != null && result != false) {
+		if(Value != null && result != false) {
 			result = string.Equals(Value, player.reverbPreset.name, StringComparison.InvariantCultureIgnoreCase);
 		}
 

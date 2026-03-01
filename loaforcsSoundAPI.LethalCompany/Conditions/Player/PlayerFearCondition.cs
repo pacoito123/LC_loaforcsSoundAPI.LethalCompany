@@ -16,22 +16,20 @@ public class PlayerFearCondition : Condition {
     public string Value { get; private set; } = null;
 
     public override bool Evaluate(IContext context) {
-        if (!StartOfRound.Instance) return false;
-        if (!GameNetworkManager.Instance) return false;
-        if (!GameNetworkManager.Instance.localPlayerController) return false;
-        if (GameNetworkManager.Instance.localPlayerController.isPlayerDead) return false;
+        if(StartOfRound.Instance == null || GameNetworkManager.Instance == null || GameNetworkManager.Instance.localPlayerController == null) return false;
+        if(GameNetworkManager.Instance.localPlayerController.isPlayerDead) return false;
 
         bool? result = null;
 
-        if (IsIncreasing != null && result != false) {
+        if(IsIncreasing != null && result != false) {
             result = IsIncreasing != StartOfRound.Instance.fearLevelIncreasing;
         }
 
-        if (Value != null) {
+        if(Value != null) {
             result = EvaluateRangeOperator(StartOfRound.Instance.fearLevel, Value);
         }
 
-        if (TimeSinceIncrease != null) {
+        if(TimeSinceIncrease != null) {
             result = EvaluateRangeOperator(GameNetworkManager.Instance.localPlayerController.timeSinceFearLevelUp, TimeSinceIncrease);
         }
 
@@ -39,10 +37,7 @@ public class PlayerFearCondition : Condition {
     }
 
     public override List<IValidatable.ValidationResult> Validate() {
-        if (Value != null && !ValidateRangeOperator(Value, out IValidatable.ValidationResult result))
-            return [result];
-        if (TimeSinceIncrease != null && !ValidateRangeOperator(TimeSinceIncrease, out result))
-            return [result];
-        return [];
+        return (Value != null && !ValidateRangeOperator(Value, out IValidatable.ValidationResult result)) || (TimeSinceIncrease != null
+            && !ValidateRangeOperator(TimeSinceIncrease, out result)) ? [result] : [];
     }
 }

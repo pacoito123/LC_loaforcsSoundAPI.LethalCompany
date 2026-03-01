@@ -23,17 +23,16 @@ public static class LethalLevelLoaderCompatibility {
     internal static void RegisterLLLConditions() {
         loaforcsSoundAPILethalCompany.Logger.LogInfo("LethalLevelLoader found, registering conditions on SoundAPI side.");
         SoundAPI.RegisterCondition("LethalLevelLoader:dungeon:has_tag", () => new LLLTagCondition<ExtendedDungeonFlow>(() => {
-            if (!RoundManager.Instance) return null;
-            if (!RoundManager.Instance.dungeonGenerator) return null;
-            if (!PatchedContent.TryGetExtendedContent(
+            if(RoundManager.Instance == null || RoundManager.Instance.dungeonGenerator == null) return null;
+            if(!PatchedContent.TryGetExtendedContent(
                     RoundManager.Instance.dungeonGenerator.Generator.DungeonFlow,
                     out ExtendedDungeonFlow lllDungeon)
                ) return null;
             return lllDungeon;
         }));
         SoundAPI.RegisterCondition("LethalLevelLoader:moon:has_tag", () => new LLLTagCondition<ExtendedLevel>(() => {
-            if (!StartOfRound.Instance) return null;
-            if (!PatchedContent.TryGetExtendedContent(
+            if(StartOfRound.Instance == null) return null;
+            if(!PatchedContent.TryGetExtendedContent(
                     StartOfRound.Instance.currentLevel,
                     out ExtendedLevel lllMoon)
                ) return null;
@@ -47,8 +46,8 @@ public static class LethalLevelLoaderCompatibility {
         HashSet<string> tags = [];
         loaforcsSoundAPILethalCompany.Logger.LogDebug("writing lll data!!");
         List<ExtendedMod> mods = [PatchedContent.VanillaMod, .. PatchedContent.ExtendedMods];
-        foreach (ExtendedMod mod in mods) {
-            foreach (ExtendedContent content in mod.ExtendedContents) {
+        foreach(ExtendedMod mod in mods) {
+            foreach(ExtendedContent content in mod.ExtendedContents) {
                 tags.UnionWith(content.ContentTagStrings);
             }
         }

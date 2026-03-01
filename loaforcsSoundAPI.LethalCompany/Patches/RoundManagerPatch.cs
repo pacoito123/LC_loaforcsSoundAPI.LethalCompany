@@ -9,13 +9,13 @@ namespace loaforcsSoundAPI.LethalCompany.Patches;
 static class RoundManagerPatch {
 	[HarmonyPatch(nameof(RoundManager.GenerateNewFloor)), HarmonyPostfix, HarmonyWrapSafe]
 	static void Reporting() {
-		if (SoundReportHandler.CurrentReport == null) return;
+		if(SoundReportHandler.CurrentReport == null) return;
 
 		string dungeonName = RoundManager.Instance.dungeonGenerator.Generator.DungeonFlow.name;
 		string moonName = StartOfRound.Instance.currentLevel.name;
 
-		LethalCompanySoundReport.foundDungeonTypes.Add(dungeonName);
-		LethalCompanySoundReport.foundMoonNames.Add(moonName);
+		_ = LethalCompanySoundReport.foundDungeonTypes.Add(dungeonName);
+		_ = LethalCompanySoundReport.foundMoonNames.Add(moonName);
 	}
 
 	[HarmonyPatch(nameof(RoundManager.Awake)), HarmonyPostfix, HarmonyWrapSafe]

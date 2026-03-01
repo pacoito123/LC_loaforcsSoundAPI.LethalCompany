@@ -21,5 +21,8 @@ csharp_new_line_before_members_in_object_initializers = false
 csharp_new_line_before_open_brace = false
 csharp_new_line_between_query_expression_clauses = false
 
+# Spacing preferences
+csharp_space_after_keywords_in_control_flow_statements = false
+
 # Trim whitespace
 trim_trailing_whitespace = false

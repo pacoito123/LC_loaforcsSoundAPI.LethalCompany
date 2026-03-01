@@ -7,7 +7,7 @@ namespace loaforcsSoundAPI.LethalCompany.Patches;
 static class ApparatusPatch {
 	[HarmonyPatch(nameof(LungProp.EquipItem)), HarmonyPrefix, HarmonyWrapSafe]
 	static void OnApparatusPull(LungProp __instance) {
-		if (__instance.isLungDocked) {
+		if(__instance.isLungDocked) {
 			ApparatusStateCondition.CurrentApparatusPulled = true;
 		}
 	}

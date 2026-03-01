@@ -14,9 +14,9 @@ static class StartOfRoundPatch {
 
 	[HarmonyPostfix, HarmonyPatch(nameof(StartOfRound.Awake)), HarmonyWrapSafe]
 	static void ReportFootstepSurfaces() {
-		if (SoundReportHandler.CurrentReport == null) return;
+		if(SoundReportHandler.CurrentReport == null) return;
 
-		foreach (FootstepSurface surface in StartOfRound.Instance.footstepSurfaces) {
+		foreach(FootstepSurface surface in StartOfRound.Instance.footstepSurfaces) {
 			LethalCompanySoundReport.foundFootstepSurfaces.Add(surface);
 		}
 	}

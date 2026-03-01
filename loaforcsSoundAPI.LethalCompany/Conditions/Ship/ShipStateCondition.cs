@@ -8,17 +8,13 @@ public class ShipStateCondition : Condition {
 		IN_ORBIT,
 		LANDED
 	}
-	
+
 	public ShipStateType Value { get; internal set; }
 
-
 	public override bool Evaluate(IContext context) {
-		if (!StartOfRound.Instance) return false;
-		if (StartOfRound.Instance.inShipPhase) {
-			return Value == ShipStateType.IN_ORBIT;
-		} else {
-			return Value == ShipStateType.LANDED;
-		}
+		return StartOfRound.Instance != null && (StartOfRound.Instance.inShipPhase
+			? Value == ShipStateType.IN_ORBIT
+			: Value == ShipStateType.LANDED);
 	}
 	// todo: validate
 }
