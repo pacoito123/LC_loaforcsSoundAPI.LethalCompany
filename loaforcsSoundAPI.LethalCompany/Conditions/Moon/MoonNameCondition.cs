@@ -1,18 +1,32 @@
 ﻿using System;
-using JetBrains.Annotations;
+using loaforcsSoundAPI.LethalCompany.Patches;
+using loaforcsSoundAPI.SoundPacks.Conditions;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
+using UnityEngine.SceneManagement;
 
 namespace loaforcsSoundAPI.LethalCompany.Conditions.Moon;
 
 [SoundAPICondition("LethalCompany:moon:name")]
-public class MoonNameCondition : Condition {
-	[CanBeNull]
-	public string Value { get; internal set; } = null;
-
-	public override bool Evaluate(IContext context) {
-		return StartOfRound.Instance != null && StartOfRound.Instance.currentLevel != null
-			&& string.Equals(Value, StartOfRound.Instance.currentLevel.name, StringComparison.InvariantCultureIgnoreCase);
+public class MoonNameCondition : MultipleCondition<SelectableLevel> {
+	protected override void OnRegistered() {
+		if(Value != null) StartOfRoundPatch.StartOfRoundAwake += PopulateValues;
 	}
 
-	// todo: validate
+	protected override void OnValuesPopulated() {
+		StartOfRoundPatch.StartOfRoundAwake -= PopulateValues;
+	}
+
+	protected override bool TryGetValue(out SelectableLevel level, string match) {
+		level = null!;
+
+		if(StartOfRound.Instance == null) return false;
+		level = Array.Find(StartOfRound.Instance.levels, level => level != null &&
+			string.Equals(level.name, match, StringComparison.InvariantCultureIgnoreCase));
+
+		return level != null;
+	}
+
+	protected override bool CheckValue(SelectableLevel level) {
+		return SceneManager.loadedSceneCount > 1 && StartOfRound.Instance != null && StartOfRound.Instance.currentLevel == level;
+	}
 }

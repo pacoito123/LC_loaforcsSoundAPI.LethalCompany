@@ -10,9 +10,6 @@ using loaforcsSoundAPI.Reporting;
 namespace loaforcsSoundAPI.LethalCompany;
 
 [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
-[BepInDependency(SoundAPI.PLUGIN_GUID)]
-
-// Integrations
 [BepInDependency(SoundAPI.PLUGIN_GUID, BepInDependency.DependencyFlags.HardDependency)]
 [BepInDependency(LethalLevelLoader.Plugin.ModGUID, BepInDependency.DependencyFlags.SoftDependency)]
 public class loaforcsSoundAPILethalCompany : BaseUnityPlugin {

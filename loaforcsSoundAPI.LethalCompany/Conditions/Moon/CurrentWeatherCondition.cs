@@ -1,16 +1,27 @@
 using System;
-using JetBrains.Annotations;
+using loaforcsSoundAPI.LethalCompany.Patches;
+using loaforcsSoundAPI.SoundPacks.Conditions;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
+using UnityEngine.SceneManagement;
 
 namespace loaforcsSoundAPI.LethalCompany.Conditions.Moon;
 
 [SoundAPICondition("LethalCompany:weather:name")]
-public class WeatherNameCondition : Condition {
-    [CanBeNull]
-    public string Value { get; internal set; } = null;
+public class WeatherNameCondition : MultipleCondition<LevelWeatherType> {
+    protected override void OnRegistered() {
+        if(Value != null) StartOfRoundPatch.StartOfRoundAwake += PopulateValues;
+    }
 
-    public override bool Evaluate(IContext context) {
-        return StartOfRound.Instance != null && StartOfRound.Instance.currentLevel != null
-            && string.Equals(Value, $"{StartOfRound.Instance.currentLevel.currentWeather}", StringComparison.InvariantCultureIgnoreCase);
+    protected override void OnValuesPopulated() {
+        StartOfRoundPatch.StartOfRoundAwake -= PopulateValues;
+    }
+
+    protected override bool TryGetValue(out LevelWeatherType weather, string match) {
+        return Enum.TryParse(match, ignoreCase: true, out weather);
+    }
+
+    protected override bool CheckValue(LevelWeatherType weather) {
+        return SceneManager.loadedSceneCount > 1 && StartOfRound.Instance != null && StartOfRound.Instance.currentLevel != null
+            && StartOfRound.Instance.currentLevel.currentWeather == weather;
     }
 }
