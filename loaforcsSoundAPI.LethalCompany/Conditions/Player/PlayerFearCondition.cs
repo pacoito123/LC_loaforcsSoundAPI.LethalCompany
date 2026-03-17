@@ -1,43 +1,50 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using loaforcsSoundAPI.Core.Data;
+using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
+using loaforcsSoundAPI.SoundPacks.Conditions;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 
 namespace loaforcsSoundAPI.LethalCompany.Conditions.Player;
 
 [SoundAPICondition("LethalCompany:player:fear")]
-public class PlayerFearCondition : Condition {
+public class PlayerFearCondition : RangeCondition<float, PlayerContext> {
+    /// <inheritdoc/>
+    protected override RangeOperator<float> DefaultRange => new(float.NegativeInfinity, float.PositiveInfinity);
+
     public bool? IsIncreasing { get; private set; } = null;
 
     [CanBeNull]
-    public string TimeSinceIncrease { get; private set; } = null;
+    public string TimeSinceIncrease { get; private set; } = null!;
 
-    [CanBeNull]
-    public string Value { get; private set; } = null;
+    public RangeOperator<float> TimeSinceIncreaseRange {
+        get => _timeSinceIncreaseRange;
+        private set => _timeSinceIncreaseRange = value;
+    }
+    private RangeOperator<float> _timeSinceIncreaseRange;
 
-    public override bool Evaluate(IContext context) {
-        if(StartOfRound.Instance == null || GameNetworkManager.Instance == null || GameNetworkManager.Instance.localPlayerController == null) return false;
-        if(GameNetworkManager.Instance.localPlayerController.isPlayerDead) return false;
+    /// <inheritdoc/>
+    public override bool EvaluateWithContext(PlayerContext context) {
+        if(context.Player == null || !context.Player.isPlayerDead || StartOfRound.Instance == null) return false; // TODO: Context maybe not needed?
 
-        bool? result = null;
-
-        if(IsIncreasing != null && result != false) {
-            result = IsIncreasing != StartOfRound.Instance.fearLevelIncreasing;
-        }
-
-        if(Value != null) {
-            result = EvaluateRangeOperator(StartOfRound.Instance.fearLevel, Value);
-        }
-
-        if(TimeSinceIncrease != null) {
-            result = EvaluateRangeOperator(GameNetworkManager.Instance.localPlayerController.timeSinceFearLevelUp, TimeSinceIncrease);
-        }
-
-        return result == true;
+        return EvaluateRangeOperator(StartOfRound.Instance.fearLevel) && IsIncreasing != !StartOfRound.Instance.fearLevelIncreasing
+            && EvaluateRangeOperator(context.Player.timeSinceFearLevelUp, TimeSinceIncreaseRange);
     }
 
+    /// <inheritdoc/>
+    public override bool EvaluateFallback(IContext context) {
+        return GameNetworkManager.Instance != null && GameNetworkManager.Instance.localPlayerController != null
+            && EvaluateWithContext(new PlayerContext(GameNetworkManager.Instance.localPlayerController));
+    }
+
+    /// <inheritdoc/>
     public override List<IValidatable.ValidationResult> Validate() {
-        return (Value != null && !ValidateRangeOperator(Value, out IValidatable.ValidationResult result)) || (TimeSinceIncrease != null
-            && !ValidateRangeOperator(TimeSinceIncrease, out result)) ? [result] : [];
+        return !string.IsNullOrEmpty(TimeSinceIncrease) && !ValidateRangeOperator(TimeSinceIncrease, out IValidatable.ValidationResult result)
+            ? [result] : base.Validate();
+    }
+
+    /// <inheritdoc/>
+    protected override bool TryParseValue(string parameter, ref float value) {
+        return string.IsNullOrEmpty(parameter) || float.TryParse(parameter, out value);
     }
 }

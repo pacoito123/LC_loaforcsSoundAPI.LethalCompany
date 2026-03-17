@@ -1,32 +1,57 @@
 ﻿using System;
-using GameNetcodeStuff;
-using JetBrains.Annotations;
+using System.Collections.Generic;
+using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
+using loaforcsSoundAPI.LethalCompany.Patches;
+using loaforcsSoundAPI.SoundPacks.Conditions;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
+using UnityEngine;
 
 namespace loaforcsSoundAPI.LethalCompany.Conditions.Player;
 
 [SoundAPICondition("LethalCompany:player:audio_reverb")]
-public class AudioReverbCondition : Condition {
-	public bool? HasEcho { get; private set; } = null;
+public class AudioReverbCondition : MultipleCondition<ReverbPreset, PlayerContext> {
+	private static ReverbPreset[]? _allReverbPresets;
+	private static Dictionary<string, ReverbPreset>? _cachedReverbPresets;
 
-	[CanBeNull]
-	public string Value { get; private set; } = null;
+	/// <inheritdoc/>
+	protected override void OnRegistered() {
+		if(string.IsNullOrEmpty(Value)) return;
+		StartOfRoundPatch.StartOfRoundAwake += PopulateValues;
+	}
 
-	public override bool Evaluate(IContext context) {
-		if(GameNetworkManager.Instance == null) return false;
-		PlayerControllerB player = GameNetworkManager.Instance.localPlayerController;
-		if(player == null || player.reverbPreset == null) return false;
+	/// <inheritdoc/>
+	protected override void PopulateValues() {
+		_allReverbPresets ??= Resources.FindObjectsOfTypeAll<ReverbPreset>();
+		_cachedReverbPresets ??= new(_allReverbPresets.Length);
+		base.PopulateValues();
+	}
 
-		bool? result = null;
+	/// <inheritdoc/>
+	protected override void OnValuesPopulated() {
+		StartOfRoundPatch.StartOfRoundAwake -= PopulateValues;
+	}
 
-		if(HasEcho != null && result != false) {
-			result = HasEcho != player.reverbPreset.hasEcho;
+	/// <inheritdoc/>
+	protected override bool TryGetValue(out ReverbPreset reverbPreset, string match) {
+		reverbPreset = null!;
+
+		if(_cachedReverbPresets == null || _allReverbPresets == null) return false;
+
+		match = match.ToLowerInvariant();
+		if(!_cachedReverbPresets.TryGetValue(match, out reverbPreset)) {
+			for(int i = _allReverbPresets.Length - 1; i >= 0; i--) {
+				reverbPreset = _allReverbPresets[i];
+				if(reverbPreset != null && string.Equals(reverbPreset.name, match, StringComparison.InvariantCultureIgnoreCase)
+					&& _cachedReverbPresets.TryAdd(match, reverbPreset)) break;
+				reverbPreset = null!;
+			}
 		}
 
-		if(Value != null && result != false) {
-			result = string.Equals(Value, player.reverbPreset.name, StringComparison.InvariantCultureIgnoreCase);
-		}
+		return reverbPreset != null;
+	}
 
-		return result == true;
+	/// <inheritdoc/>
+	protected override bool CheckValueWithContext(ReverbPreset value, PlayerContext? context) {
+		return context != null && context.Player != null && context.Player.reverbPreset == value;
 	}
 }

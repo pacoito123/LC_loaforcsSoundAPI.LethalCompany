@@ -1,29 +1,36 @@
-﻿using GameNetcodeStuff;
+﻿using System;
 using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
+using loaforcsSoundAPI.SoundPacks.Conditions;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 
 namespace loaforcsSoundAPI.LethalCompany.Conditions.Player;
 
 [SoundAPICondition("LethalCompany:player:location")]
-public class PlayerLocationCondition : Condition<PlayerContext> {
-	public enum LocationType {
-		INSIDE,
-		ON_SHIP,
-		OUTSIDE
+public class PlayerLocationCondition : MultipleCondition<LocationType, PlayerContext> {
+	/// <inheritdoc/>
+	protected override bool TryGetValue(out LocationType location, string match) {
+		return Enum.TryParse(match, ignoreCase: true, out location);
 	}
 
-	public LocationType Value { get; internal set; }
-
-	protected override bool EvaluateWithContext(PlayerContext context) {
-		return context.Player != null && !context.Player.isPlayerDead
-			&& (context.Player.isInsideFactory ? Value == LocationType.INSIDE
-			: context.Player.isInHangarShipRoom ? Value == LocationType.ON_SHIP
-			: Value == LocationType.OUTSIDE);
+	/// <inheritdoc/>
+	protected override bool CheckValueWithContext(LocationType locationType, PlayerContext? context) {
+		return context?.Player != null && !context.Player.isPlayerDead
+			&& (context.Player.isInsideFactory ? locationType is LocationType.INSIDE
+			: context.Player.isInHangarShipRoom ? locationType is LocationType.IN_SHIP
+			: context.Player.isInElevator ? locationType is LocationType.ON_SHIP
+			: locationType is LocationType.OUTSIDE);
 	}
 
-	protected override bool EvaluateFallback(IContext context) {
+	/// <inheritdoc/>
+	public override bool EvaluateFallback(IContext context) {
 		return GameNetworkManager.Instance != null && GameNetworkManager.Instance.localPlayerController != null
-			&& EvaluateWithContext(new PlayerContext(GameNetworkManager.Instance.localPlayerController));
+			&& EvaluateWithContext(new(GameNetworkManager.Instance.localPlayerController));
 	}
-	// todo: validate
+}
+
+public enum LocationType {
+	INSIDE,
+	IN_SHIP,
+	ON_SHIP,
+	OUTSIDE
 }

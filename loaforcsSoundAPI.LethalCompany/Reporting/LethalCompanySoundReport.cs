@@ -25,23 +25,25 @@ static class LethalCompanySoundReport {
 			SoundReportHandler.WriteList("Found Reverb Presets", stream, [.. foundReverbPresets.Select(ReverbPresetToHumanReadable)]);
 			SoundReportHandler.WriteList("Found Footstep Surfaces", stream, [.. foundFootstepSurfaces.Select(it => it.surfaceTag)]);
 
-			foreach (EnemyType enemyType in foundEnemyBehaviourStates.Keys) {
+			foreach(EnemyType enemyType in foundEnemyBehaviourStates.Keys) {
 				SoundReportHandler.WriteList($"Found '{enemyType.enemyName}' Behaviour States", stream, [.. foundEnemyBehaviourStates[enemyType].Select(enemyState => enemyState.name)]);
 			}
 
-			SoundReportHandler.WriteEnum<PlayerLocationCondition.LocationType>("Player Location Types", stream);
+			SoundReportHandler.WriteEnum<LocationType>("Player Location Types", stream);
 			SoundReportHandler.WriteEnum<ApparatusStateCondition.StateType>("Apparatus State Types", stream);
 			SoundReportHandler.WriteEnum<DayMode>("Time Of Day Types", stream); // :skull:
 			SoundReportHandler.WriteEnum<ShipStateCondition.ShipStateType>("Ship State Types", stream);
-			SoundReportHandler.WriteEnum<VehicleRidingCondition.RiderType>("Vehicle Riding Types", stream);
+			SoundReportHandler.WriteEnum<RiderType>("Vehicle Riding Types", stream);
 
-			if (LethalLevelLoaderCompatibility.Enabled) {
+			if(LethalLevelLoaderCompatibility.Enabled) {
 				LethalLevelLoaderCompatibility.WriteLLLDataToReport(stream);
 			}
 		});
 	}
 
-	static string ReverbPresetToHumanReadable(ReverbPreset preset) {
+	static string ReverbPresetToHumanReadable(ReverbPreset? preset) {
+		if(preset == null) return "<empty>";
+
 		string result = preset.name + "<br/>\n";
 		result += $"hasEcho: {preset.hasEcho} <br/>\n";
 		result += $"changeRoom: {preset.changeRoom}, room: {preset.room} <br/>\n";

@@ -8,6 +8,7 @@ public class DungeonPowerStateCondition : Condition {
 
 	public bool? Value { get; internal set; }
 
+	/// <inheritdoc/>
 	public override bool Evaluate(IContext context) {
 		return CurrentPowerState == (Value ?? true);
 	}
