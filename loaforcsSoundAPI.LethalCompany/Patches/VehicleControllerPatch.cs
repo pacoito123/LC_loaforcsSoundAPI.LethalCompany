@@ -7,7 +7,7 @@ namespace loaforcsSoundAPI.LethalCompany.Patches;
 
 [HarmonyPatch(typeof(VehicleController))]
 static class VehicleControllerPatch {
-    [HarmonyPatch(nameof(VehicleController.Start))]
+    [HarmonyPatch(nameof(VehicleController.Start)), HarmonyPostfix]
     static void UpdateVehicleContexts(VehicleController __instance) {
         VehicleContext context = new(__instance);
         VehicleContext.FallbackVehicle = __instance;
