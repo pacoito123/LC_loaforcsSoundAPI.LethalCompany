@@ -4,7 +4,7 @@ namespace loaforcsSoundAPI.LethalCompany.Conditions;
 
 [SoundAPICondition("LethalCompany:apparatus_state")]
 public class ApparatusStateCondition : Condition {
-	public enum StateType {
+	public enum StateType : byte {
 		PULLED,
 		PLUGGED_IN
 	}

@@ -1,20 +1,31 @@
-﻿using loaforcsSoundAPI.SoundPacks.Data.Conditions;
+﻿using System;
+using loaforcsSoundAPI.SoundPacks.Conditions;
+using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 
 namespace loaforcsSoundAPI.LethalCompany.Conditions.Ship;
 
 [SoundAPICondition("LethalCompany:ship:state")]
-public class ShipStateCondition : Condition {
-	public enum ShipStateType {
-		IN_ORBIT,
-		LANDED
+public class ShipStateCondition : MultipleCondition<ShipStateType> {
+	/// <inheritdoc/>
+	protected override bool TryGetValue(out ShipStateType value, string match) {
+		return Enum.TryParse(match, ignoreCase: true, out value);
 	}
 
-	public ShipStateType Value { get; internal set; }
-
-	public override bool Evaluate(IContext context) {
-		return StartOfRound.Instance != null && (StartOfRound.Instance.inShipPhase
-			? Value == ShipStateType.IN_ORBIT
-			: Value == ShipStateType.LANDED);
+	/// <inheritdoc/>
+	protected override bool CheckValue(ShipStateType value) {
+		return StartOfRound.Instance != null && value switch {
+			ShipStateType.IN_ORBIT => StartOfRound.Instance.inShipPhase,
+			ShipStateType.LANDING => StartOfRound.Instance.inShipPhase && !StartOfRound.Instance.shipHasLanded,
+			ShipStateType.LANDED => StartOfRound.Instance.shipHasLanded,
+			ShipStateType.LEAVING => StartOfRound.Instance.shipIsLeaving && !StartOfRound.Instance.inShipPhase,
+			_ => false,
+		};
 	}
-	// todo: validate
+}
+
+public enum ShipStateType : byte {
+	IN_ORBIT,
+	LANDING,
+	LANDED,
+	LEAVING
 }

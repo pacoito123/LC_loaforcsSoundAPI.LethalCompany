@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using loaforcsSoundAPI.Core.Data;
-using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
+﻿using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
 using loaforcsSoundAPI.SoundPacks.Conditions;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 

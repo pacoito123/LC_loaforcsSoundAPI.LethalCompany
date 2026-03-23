@@ -48,8 +48,8 @@ public class VehicleRidingCondition : MultipleCondition<RiderType, VehicleContex
     }
 }
 
-public enum RiderType {
-    NONE = -1,
+public enum RiderType : byte {
+    NONE,
     DRIVER,
     PASSENGER,
     IN_BACK,

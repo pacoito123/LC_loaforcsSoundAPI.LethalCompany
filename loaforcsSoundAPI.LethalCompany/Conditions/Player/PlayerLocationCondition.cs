@@ -28,7 +28,7 @@ public class PlayerLocationCondition : MultipleCondition<LocationType, PlayerCon
 	}
 }
 
-public enum LocationType {
+public enum LocationType : byte {
 	INSIDE,
 	IN_SHIP,
 	ON_SHIP,
