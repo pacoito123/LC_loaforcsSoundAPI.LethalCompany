@@ -23,8 +23,9 @@ public class PlayerLocationCondition : MultipleCondition<LocationType, PlayerCon
 
 	/// <inheritdoc/>
 	public override bool EvaluateFallback(IContext context) {
-		return GameNetworkManager.Instance != null && GameNetworkManager.Instance.localPlayerController != null
-			&& EvaluateWithContext(new(GameNetworkManager.Instance.localPlayerController));
+		return _currentContext != null ? EvaluateWithContext(_currentContext)
+			: GameNetworkManager.Instance != null && GameNetworkManager.Instance.localPlayerController != null
+				&& EvaluateWithContext(new(GameNetworkManager.Instance.localPlayerController));
 	}
 }
 

@@ -34,6 +34,7 @@ static class LethalCompanySoundReport {
 			SoundReportHandler.WriteEnum<DayMode>("Time Of Day Types", stream); // :skull:
 			SoundReportHandler.WriteEnum<ShipStateType>("Ship State Types", stream);
 			SoundReportHandler.WriteEnum<RiderType>("Vehicle Riding Types", stream);
+			SoundReportHandler.WriteEnum<DropshipStateType>("Dropship State Types", stream);
 
 			if(LethalLevelLoaderCompatibility.Enabled) {
 				LethalLevelLoaderCompatibility.WriteLLLDataToReport(stream);
