@@ -11,9 +11,8 @@ namespace loaforcsSoundAPI.LethalCompany.Patches;
 internal static class EnemyAIPatch {
     [HarmonyPatch(nameof(EnemyAI.Start)), HarmonyPrefix]
     private static void UpdateEnemyContexts(EnemyAI __instance) {
-        EnemyContext context = new(__instance);
         foreach(AudioSource source in __instance.GetComponentsInChildren<AudioSource>(includeInactive: true)) {
-            AudioSourceAdditionalData.GetOrCreate(source).CurrentContext = context;
+            AudioSourceAdditionalData.GetOrCreate(source).CurrentContext = new EnemyContext(source, __instance);
         }
     }
 

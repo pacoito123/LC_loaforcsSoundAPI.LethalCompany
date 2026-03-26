@@ -11,8 +11,8 @@ public class ShipDeliveryCondition : MultipleCondition<DropshipStateType, Dropsh
 		return Enum.TryParse(match, ignoreCase: true, out value);
 	}
 
-	protected override bool CheckValueWithContext(DropshipStateType value, DropshipContext? context) {
-		return context != null && context.Dropship != null && value switch {
+	protected override bool CheckValueWithContext(DropshipStateType value, DropshipContext context) {
+		return context.Dropship != null && value switch {
 			DropshipStateType.DELIVERING_ITEMS => context.Dropship.deliveringOrder && !context.Dropship.deliveringVehicle,
 			DropshipStateType.DROPSHIP_LANDED => context.Dropship.shipLanded,
 			DropshipStateType.DROPSHIP_OPENED => context.Dropship.shipDoorsOpened,
@@ -25,8 +25,8 @@ public class ShipDeliveryCondition : MultipleCondition<DropshipStateType, Dropsh
 
 	/// <inheritdoc/>
 	public override bool EvaluateFallback(IContext context) {
-		return _currentContext != null ? EvaluateWithContext(_currentContext)
-			: DropshipContext.FallbackDropship != null && EvaluateWithContext(new(DropshipContext.FallbackDropship));
+		return _currentContext.HasValue ? EvaluateWithContext(_currentContext.Value)
+			: DropshipContext.FallbackDropship != null && EvaluateWithContext(new(context.Source, DropshipContext.FallbackDropship));
 	}
 }
 

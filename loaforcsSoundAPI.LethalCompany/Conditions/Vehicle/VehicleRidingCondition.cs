@@ -8,14 +8,14 @@ namespace loaforcsSoundAPI.LethalCompany.Conditions.Vehicle;
 
 [SoundAPICondition("LethalCompany:vehicle:riding")]
 public class VehicleRidingCondition : MultipleCondition<RiderType, VehicleContext> {
-	/// <inheritdoc/>
+    /// <inheritdoc/>
     protected override bool TryGetValue(out RiderType riderType, string match) {
         return Enum.TryParse(match, ignoreCase: true, out riderType);
     }
 
-	/// <inheritdoc/>
-    protected override bool CheckValueWithContext(RiderType riderType, VehicleContext? context) {
-        if(context == null || context.Vehicle == null || context.Vehicle.carDestroyed) return false;
+    /// <inheritdoc/>
+    protected override bool CheckValueWithContext(RiderType riderType, VehicleContext context) {
+        if(context.Vehicle == null || context.Vehicle.carDestroyed) return false;
 
         Vector3 playerPosition = Vector3.zero;
         if(riderType is RiderType.IN_BACK or RiderType.ON_TOP or RiderType.IN_FRONT or RiderType.NONE) {
@@ -41,10 +41,10 @@ public class VehicleRidingCondition : MultipleCondition<RiderType, VehicleContex
         };
     }
 
-	/// <inheritdoc/>
+    /// <inheritdoc/>
     public override bool EvaluateFallback(IContext context) {
-        return _currentContext != null ? EvaluateWithContext(_currentContext)
-            : VehicleContext.FallbackVehicle != null && EvaluateWithContext(new(VehicleContext.FallbackVehicle));
+        return _currentContext.HasValue ? EvaluateWithContext(_currentContext.Value)
+            : VehicleContext.FallbackVehicle != null && EvaluateWithContext(new(context.Source, VehicleContext.FallbackVehicle));
     }
 }
 

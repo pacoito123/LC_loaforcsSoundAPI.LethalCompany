@@ -9,11 +9,10 @@ namespace loaforcsSoundAPI.LethalCompany.Patches;
 internal static class ItemDropshipPatch {
     [HarmonyPatch(nameof(ItemDropship.Start)), HarmonyPostfix]
     private static void UpdateDropshipContexts(ItemDropship __instance) {
-        DropshipContext context = new(__instance);
         DropshipContext.FallbackDropship = __instance;
 
         foreach(AudioSource source in __instance.GetComponentsInChildren<AudioSource>(includeInactive: true)) {
-            AudioSourceAdditionalData.GetOrCreate(source).CurrentContext = context;
+            AudioSourceAdditionalData.GetOrCreate(source).CurrentContext = new DropshipContext(source, __instance); ;
         }
     }
 }

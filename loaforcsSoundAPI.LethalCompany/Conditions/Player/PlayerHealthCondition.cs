@@ -17,7 +17,7 @@ public class PlayerHealthCondition : RangeCondition<int, PlayerContext> {
 	/// <inheritdoc/>
 	public override bool EvaluateFallback(IContext context) {
 		return GameNetworkManager.Instance != null && GameNetworkManager.Instance.localPlayerController != null
-			&& EvaluateWithContext(new PlayerContext(GameNetworkManager.Instance.localPlayerController));
+			&& EvaluateWithContext(new PlayerContext(context.Source, GameNetworkManager.Instance.localPlayerController));
 	}
 
 	/// <inheritdoc/>

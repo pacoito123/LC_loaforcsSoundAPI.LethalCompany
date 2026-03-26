@@ -31,14 +31,14 @@ public class PlayerStandingOnCondition : MultipleCondition<int, PlayerContext> {
 	}
 
 	/// <inheritdoc/>
-	protected override bool CheckValueWithContext(int surfaceIndex, PlayerContext? context) {
-		return context?.Player != null && context.Player.currentFootstepSurfaceIndex == surfaceIndex;
+	protected override bool CheckValueWithContext(int surfaceIndex, PlayerContext context) {
+		return context.Player != null && context.Player.currentFootstepSurfaceIndex == surfaceIndex;
 	}
 
 	/// <inheritdoc/>
 	public override bool EvaluateFallback(IContext context) {
-		return _currentContext != null ? EvaluateWithContext(_currentContext)
+		return _currentContext.HasValue ? EvaluateWithContext(_currentContext.Value)
 			: GameNetworkManager.Instance != null && GameNetworkManager.Instance.localPlayerController != null
-				&& EvaluateWithContext(new(GameNetworkManager.Instance.localPlayerController));
+				&& EvaluateWithContext(new(context.Source, GameNetworkManager.Instance.localPlayerController));
 	}
 }

@@ -24,7 +24,7 @@ public class EnemyBehaviourStateCondition : MultipleCondition<EnemyBehaviourStat
         StartOfRoundPatch.StartOfRoundAwake += PopulateValues;
     }
 
-	/// <inheritdoc/>
+    /// <inheritdoc/>
     protected override void PopulateValues() {
         _allEnemyTypes ??= Resources.FindObjectsOfTypeAll<EnemyType>();
         _cachedEnemies ??= new(_allEnemyTypes.Length);
@@ -37,8 +37,8 @@ public class EnemyBehaviourStateCondition : MultipleCondition<EnemyBehaviourStat
     }
 
     /// <inheritdoc/>
-    protected override bool CheckValueWithContext(EnemyBehaviourState value, EnemyContext? context) {
-        return context != null && context.Enemy != null && context.Enemy.currentBehaviourState == value;
+    protected override bool CheckValueWithContext(EnemyBehaviourState value, EnemyContext context) {
+        return context.Enemy != null && context.Enemy.currentBehaviourState == value;
     }
 
     /// <inheritdoc/>

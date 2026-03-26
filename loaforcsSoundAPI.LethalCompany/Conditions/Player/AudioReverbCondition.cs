@@ -51,14 +51,14 @@ public class AudioReverbCondition : MultipleCondition<ReverbPreset, PlayerContex
 	}
 
 	/// <inheritdoc/>
-	protected override bool CheckValueWithContext(ReverbPreset value, PlayerContext? context) {
-		return context != null && context.Player != null && context.Player.reverbPreset == value;
+	protected override bool CheckValueWithContext(ReverbPreset value, PlayerContext context) {
+		return context.Source != null && context.Player != null && context.Player.reverbPreset == value;
 	}
 
 	/// <inheritdoc/>
 	public override bool EvaluateFallback(IContext context) {
-		return _currentContext != null ? EvaluateWithContext(_currentContext)
+		return _currentContext.HasValue ? EvaluateWithContext(_currentContext.Value)
 			: GameNetworkManager.Instance != null && GameNetworkManager.Instance.localPlayerController != null
-				&& EvaluateWithContext(new(GameNetworkManager.Instance.localPlayerController));
+				&& EvaluateWithContext(new(context.Source, GameNetworkManager.Instance.localPlayerController));
 	}
 }

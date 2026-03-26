@@ -13,8 +13,8 @@ public class PlayerLocationCondition : MultipleCondition<LocationType, PlayerCon
 	}
 
 	/// <inheritdoc/>
-	protected override bool CheckValueWithContext(LocationType locationType, PlayerContext? context) {
-		return context?.Player != null && !context.Player.isPlayerDead
+	protected override bool CheckValueWithContext(LocationType locationType, PlayerContext context) {
+		return context.Player != null && !context.Player.isPlayerDead
 			&& (context.Player.isInsideFactory ? locationType is LocationType.INSIDE
 			: context.Player.isInHangarShipRoom ? locationType is LocationType.IN_SHIP
 			: context.Player.isInElevator ? locationType is LocationType.ON_SHIP
@@ -23,9 +23,9 @@ public class PlayerLocationCondition : MultipleCondition<LocationType, PlayerCon
 
 	/// <inheritdoc/>
 	public override bool EvaluateFallback(IContext context) {
-		return _currentContext != null ? EvaluateWithContext(_currentContext)
+		return _currentContext.HasValue ? EvaluateWithContext(_currentContext.Value)
 			: GameNetworkManager.Instance != null && GameNetworkManager.Instance.localPlayerController != null
-				&& EvaluateWithContext(new(GameNetworkManager.Instance.localPlayerController));
+				&& EvaluateWithContext(new(context.Source, GameNetworkManager.Instance.localPlayerController));
 	}
 }
 
