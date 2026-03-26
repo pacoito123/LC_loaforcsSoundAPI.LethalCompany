@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using loaforcsSoundAPI.Core.Data;
-using loaforcsSoundAPI.LethalCompany.Patches;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
