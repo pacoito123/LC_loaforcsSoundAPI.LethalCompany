@@ -1,6 +1,5 @@
 ﻿using System;
 using HarmonyLib;
-using loaforcsSoundAPI.LethalCompany.Conditions;
 using loaforcsSoundAPI.LethalCompany.Reporting;
 using loaforcsSoundAPI.Reporting;
 
@@ -9,11 +8,6 @@ namespace loaforcsSoundAPI.LethalCompany.Patches;
 [HarmonyPatch(typeof(StartOfRound))]
 static class StartOfRoundPatch {
 	internal static event Action? StartOfRoundAwake;
-
-	[HarmonyPrefix, HarmonyPatch(nameof(StartOfRound.EndOfGame))]
-	static void ResetApparatusState() {
-		ApparatusStateCondition.CurrentApparatusPulled = false;
-	}
 
 	[HarmonyPostfix, HarmonyPatch(nameof(StartOfRound.Awake))]
 	static void StartOfRoundAwakePost(StartOfRound __instance) {
