@@ -6,15 +6,11 @@ using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
 using loaforcsSoundAPI.LethalCompany.Patches;
 using loaforcsSoundAPI.SoundPacks.Conditions;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
-using UnityEngine;
 
 namespace loaforcsSoundAPI.LethalCompany.Conditions.Enemy;
 
 [SoundAPICondition("LethalCompany:enemy:behaviour_state")]
 public class EnemyBehaviourStateCondition : MultipleCondition<EnemyBehaviourState, EnemyContext> {
-    private static EnemyType[]? _allEnemyTypes;
-    private static Dictionary<string, EnemyAI>? _cachedEnemies;
-
     [CanBeNull]
     public string EnemyName { get; private set; } = null!;
 
@@ -26,8 +22,6 @@ public class EnemyBehaviourStateCondition : MultipleCondition<EnemyBehaviourStat
 
     /// <inheritdoc/>
     protected override void PopulateValues() {
-        _allEnemyTypes ??= Resources.FindObjectsOfTypeAll<EnemyType>();
-        _cachedEnemies ??= new(_allEnemyTypes.Length);
         base.PopulateValues();
     }
 
@@ -51,19 +45,8 @@ public class EnemyBehaviourStateCondition : MultipleCondition<EnemyBehaviourStat
     protected override bool TryGetValue(out EnemyBehaviourState enemyState, string match) {
         enemyState = null!;
 
-        if(_cachedEnemies == null || _allEnemyTypes == null || string.IsNullOrEmpty(EnemyName)) return false;
-
-        string enemyName = EnemyName.ToLowerInvariant();
-        if(!_cachedEnemies.TryGetValue(enemyName, out EnemyAI enemy)) {
-            foreach(EnemyType enemyType in _allEnemyTypes) {
-                if(enemyType != null && string.Equals(enemyType.enemyName, enemyName, StringComparison.InvariantCultureIgnoreCase)
-                    && enemyType.enemyPrefab != null && enemyType.enemyPrefab.TryGetComponent(out enemy)
-                    && _cachedEnemies.TryAdd(enemyName, enemy)) break;
-                enemy = null!;
-            }
-        }
-
-        if(enemy != null && enemy.enemyBehaviourStates != null) {
+        if(string.IsNullOrEmpty(EnemyName)) return false;
+        if(EnemyContext.TryFindEnemy(EnemyName, out EnemyAI enemy) && enemy.enemyBehaviourStates != null) {
             enemyState = Array.Find(enemy.enemyBehaviourStates, enemyState =>
                 string.Equals(enemyState?.name, match, StringComparison.InvariantCultureIgnoreCase));
         }
