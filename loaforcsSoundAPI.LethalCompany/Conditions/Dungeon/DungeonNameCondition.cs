@@ -21,19 +21,19 @@ public class DungeonNameCondition : MultipleCondition<DungeonFlow> {
 	}
 
 	/// <inheritdoc/>
-	protected override bool TryGetValue(out DungeonFlow dungeon, string match) {
-		dungeon = null!;
+	protected override bool TryGetValue(out DungeonFlow value, string match) {
+		value = null!;
 
 		if(RoundManager.Instance == null || RoundManager.Instance.dungeonFlowTypes == null) return false;
-		dungeon = Array.Find(RoundManager.Instance.dungeonFlowTypes, indoorMapType => indoorMapType?.dungeonFlow != null
+		value = Array.Find(RoundManager.Instance.dungeonFlowTypes, indoorMapType => indoorMapType?.dungeonFlow != null
 			&& string.Equals(indoorMapType.dungeonFlow.name, match, StringComparison.InvariantCultureIgnoreCase))?.dungeonFlow!;
 
-		return dungeon != null;
+		return value != null;
 	}
 
 	/// <inheritdoc/>
-	protected override bool CheckValue(DungeonFlow dungeon) {
+	protected override bool CheckValue(DungeonFlow value) {
 		return SceneManager.loadedSceneCount > 1 && RoundManager.Instance != null && RoundManager.Instance.dungeonGenerator != null
-			&& RoundManager.Instance.dungeonGenerator.Generator != null && RoundManager.Instance.dungeonGenerator.Generator.DungeonFlow == dungeon;
+			&& RoundManager.Instance.dungeonGenerator.Generator != null && RoundManager.Instance.dungeonGenerator.Generator.DungeonFlow == value;
 	}
 }

@@ -42,15 +42,15 @@ public class EnemyBehaviourStateCondition : MultipleCondition<EnemyBehaviourStat
     }
 
     /// <inheritdoc/>
-    protected override bool TryGetValue(out EnemyBehaviourState enemyState, string match) {
-        enemyState = null!;
+    protected override bool TryGetValue(out EnemyBehaviourState value, string match) {
+        value = null!;
 
         if(string.IsNullOrEmpty(EnemyName)) return false;
         if(EnemyContext.TryFindEnemy(EnemyName, out EnemyAI enemy) && enemy.enemyBehaviourStates != null) {
-            enemyState = Array.Find(enemy.enemyBehaviourStates, enemyState =>
+            value = Array.Find(enemy.enemyBehaviourStates, enemyState =>
                 string.Equals(enemyState?.name, match, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        return enemyState != null;
+        return value != null;
     }
 }

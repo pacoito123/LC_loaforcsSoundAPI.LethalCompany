@@ -20,18 +20,18 @@ public class MoonNameCondition : MultipleCondition<SelectableLevel> {
 	}
 
 	/// <inheritdoc/>
-	protected override bool TryGetValue(out SelectableLevel level, string match) {
-		level = null!;
+	protected override bool TryGetValue(out SelectableLevel value, string match) {
+		value = null!;
 
 		if(StartOfRound.Instance == null || StartOfRound.Instance.levels == null) return false;
-		level = Array.Find(StartOfRound.Instance.levels, level => level != null &&
+		value = Array.Find(StartOfRound.Instance.levels, level => level != null &&
 			string.Equals(level.name, match, StringComparison.InvariantCultureIgnoreCase));
 
-		return level != null;
+		return value != null;
 	}
 
 	/// <inheritdoc/>
-	protected override bool CheckValue(SelectableLevel level) {
-		return SceneManager.loadedSceneCount > 1 && StartOfRound.Instance != null && StartOfRound.Instance.currentLevel == level;
+	protected override bool CheckValue(SelectableLevel value) {
+		return SceneManager.loadedSceneCount > 1 && StartOfRound.Instance != null && StartOfRound.Instance.currentLevel == value;
 	}
 }

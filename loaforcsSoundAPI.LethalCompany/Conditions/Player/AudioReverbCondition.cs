@@ -32,22 +32,22 @@ public class AudioReverbCondition : MultipleCondition<ReverbPreset, PlayerContex
 	}
 
 	/// <inheritdoc/>
-	protected override bool TryGetValue(out ReverbPreset reverbPreset, string match) {
-		reverbPreset = null!;
+	protected override bool TryGetValue(out ReverbPreset value, string match) {
+		value = null!;
 
 		if(_cachedReverbPresets == null || _allReverbPresets == null) return false;
 
 		match = match.ToLowerInvariant();
-		if(!_cachedReverbPresets.TryGetValue(match, out reverbPreset)) {
+		if(!_cachedReverbPresets.TryGetValue(match, out value)) {
 			for(int i = _allReverbPresets.Length - 1; i >= 0; i--) {
-				reverbPreset = _allReverbPresets[i];
-				if(reverbPreset != null && string.Equals(reverbPreset.name, match, StringComparison.InvariantCultureIgnoreCase)
-					&& _cachedReverbPresets.TryAdd(match, reverbPreset)) break;
-				reverbPreset = null!;
+				value = _allReverbPresets[i];
+				if(value != null && string.Equals(value.name, match, StringComparison.InvariantCultureIgnoreCase)
+					&& _cachedReverbPresets.TryAdd(match, value)) break;
+				value = null!;
 			}
 		}
 
-		return reverbPreset != null;
+		return value != null;
 	}
 
 	/// <inheritdoc/>
