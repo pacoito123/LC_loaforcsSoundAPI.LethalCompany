@@ -39,8 +39,8 @@ public class PlayerFearCondition : RangeCondition<float, PlayerContext> {
 
     /// <inheritdoc/>
     public override List<IValidatable.ValidationResult> Validate() {
-        return !string.IsNullOrEmpty(TimeSinceIncrease) && !ValidateRangeOperator(TimeSinceIncrease, out IValidatable.ValidationResult result)
-            ? [result] : base.Validate();
+        return !string.IsNullOrEmpty(TimeSinceIncrease) && !ValidateRangeOperator(TimeSinceIncrease, out _timeSinceIncreaseRange,
+            out IValidatable.ValidationResult result) ? [result] : base.Validate();
     }
 
     /// <inheritdoc/>
