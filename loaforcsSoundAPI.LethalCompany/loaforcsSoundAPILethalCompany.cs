@@ -37,6 +37,8 @@ public class loaforcsSoundAPILethalCompany : BaseUnityPlugin {
 		Harmony.PatchAll(typeof(ApparatusPatch));
 		Harmony.PatchAll(typeof(AudioReverbTriggerPatch));
 		Harmony.PatchAll(typeof(EnemyAIPatch));
+		Harmony.PatchAll(typeof(HangarShipDoorPatch));
+		Harmony.PatchAll(typeof(ItemDropshipPatch));
 		Harmony.PatchAll(typeof(PlayerControllerPatch));
 		Harmony.PatchAll(typeof(RoundManagerPatch));
 		Harmony.PatchAll(typeof(StartOfRoundPatch));

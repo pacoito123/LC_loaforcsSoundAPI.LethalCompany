@@ -49,7 +49,7 @@ public class ShipDoorStateCondition : Condition<ShipDoorContext> {
 
 	/// <inheritdoc/>
 	public override List<IValidatable.ValidationResult> Validate() {
-		return !string.IsNullOrEmpty(DoorPower) && RangeOperator<float>.ValidateRangeOperator(DoorPower, out _doorPowerRange,
+		return !string.IsNullOrEmpty(DoorPower) && !RangeOperator<float>.ValidateRangeOperator(DoorPower, out _doorPowerRange,
 			out IValidatable.ValidationResult result, TryParseValue, new(0.0f, 100.0f)) ? [result] : [];
 	}
 

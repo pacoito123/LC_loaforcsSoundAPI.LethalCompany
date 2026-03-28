@@ -21,11 +21,6 @@ public class EnemyBehaviourStateCondition : MultipleCondition<EnemyBehaviourStat
     }
 
     /// <inheritdoc/>
-    protected override void PopulateValues() {
-        base.PopulateValues();
-    }
-
-    /// <inheritdoc/>
     protected override void OnValuesPopulated() {
         StartOfRoundPatch.StartOfRoundAwake -= PopulateValues;
     }

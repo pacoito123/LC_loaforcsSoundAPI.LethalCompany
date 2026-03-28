@@ -18,11 +18,6 @@ public class PlayerHeldItemCondition : MultipleCondition<Item, PlayerContext> {
     }
 
     /// <inheritdoc/>
-    protected override void PopulateValues() {
-        base.PopulateValues();
-    }
-
-    /// <inheritdoc/>
     protected override void OnValuesPopulated() {
         StartOfRoundPatch.StartOfRoundAwake -= PopulateValues;
     }
