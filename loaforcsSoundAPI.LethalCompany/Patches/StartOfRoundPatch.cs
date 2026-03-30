@@ -9,7 +9,7 @@ namespace loaforcsSoundAPI.LethalCompany.Patches;
 static class StartOfRoundPatch {
 	internal static event Action? StartOfRoundAwake;
 
-	[HarmonyPostfix, HarmonyPatch(nameof(StartOfRound.Awake))]
+	[HarmonyPatch(nameof(StartOfRound.Awake)), HarmonyPostfix]
 	static void StartOfRoundAwakePost(StartOfRound __instance) {
 		if(SoundReportHandler.CurrentReport != null) {
 			for(int i = 0; i < __instance.footstepSurfaces.Length; i++) {

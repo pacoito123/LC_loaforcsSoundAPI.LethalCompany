@@ -27,10 +27,6 @@ public class ItemNameCondition : MultipleCondition<Item, ItemContext> {
     /// <inheritdoc/>
     protected override bool TryGetValue(out Item value, string match) {
         value = null!;
-
-        if(string.IsNullOrEmpty(match) || !ItemContext.TryFindItem(match, out value))
-            Pack.Logger.LogWarning($"[Debug-SoundReplacementLoader] Item name field '{Value}' for one \"LethalCompany:item:name\" condition in SoundPack '{Pack.Name}' returned no successful matches!");
-
-        return value != null;
+        return !string.IsNullOrEmpty(match) && ItemContext.TryFindItem(match, out value);
     }
 }

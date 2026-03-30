@@ -6,7 +6,7 @@ namespace loaforcsSoundAPI.LethalCompany.Patches;
 
 [HarmonyPatch(typeof(AudioReverbTrigger))]
 static class AudioReverbTriggerPatch {
-	[HarmonyPatch(nameof(AudioReverbTrigger.ChangeAudioReverbForPlayer)), HarmonyPostfix, HarmonyWrapSafe]
+	[HarmonyPatch(nameof(AudioReverbTrigger.ChangeAudioReverbForPlayer)), HarmonyPostfix]
 	static void LogFoundReverbPreset(AudioReverbTrigger __instance) {
 		if(SoundReportHandler.CurrentReport == null) return;
 		if(__instance.reverbPreset == null) return;

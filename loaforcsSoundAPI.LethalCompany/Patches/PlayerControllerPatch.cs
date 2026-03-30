@@ -8,7 +8,7 @@ namespace loaforcsSoundAPI.LethalCompany.Patches;
 
 [HarmonyPatch(typeof(PlayerControllerB))]
 static class PlayerControllerPatch {
-	[HarmonyPatch(nameof(PlayerControllerB.Start))]
+	[HarmonyPatch(nameof(PlayerControllerB.Start)), HarmonyPrefix]
 	static void UpdatePlayerContexts(PlayerControllerB __instance) {
 		AudioSourceAdditionalData.GetOrCreate(__instance.movementAudio).CurrentContext = new PlayerContext(__instance.movementAudio, __instance);
 		AudioSourceAdditionalData.GetOrCreate(__instance.statusEffectAudio).CurrentContext = new PlayerContext(__instance.statusEffectAudio, __instance);
