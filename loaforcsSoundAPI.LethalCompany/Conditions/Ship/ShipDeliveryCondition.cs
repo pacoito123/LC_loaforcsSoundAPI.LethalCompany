@@ -25,8 +25,8 @@ public class ShipDeliveryCondition : MultipleCondition<DropshipStateType, Dropsh
 
 	/// <inheritdoc/>
 	public override bool EvaluateFallback(IContext context) {
-		return _currentContext.HasValue ? EvaluateWithContext(_currentContext.Value)
-			: DropshipContext.FallbackDropship != null && EvaluateWithContext(new(context.Source, DropshipContext.FallbackDropship));
+		return DropshipContext.FallbackDropship != null
+			&& EvaluateWithContext(new(context.Source, DropshipContext.FallbackDropship));
 	}
 }
 

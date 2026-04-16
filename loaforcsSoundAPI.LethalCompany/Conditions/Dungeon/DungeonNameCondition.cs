@@ -32,7 +32,7 @@ public class DungeonNameCondition : MultipleCondition<DungeonFlow> {
 	}
 
 	/// <inheritdoc/>
-	protected override bool CheckValue(DungeonFlow value) {
+	protected override bool CheckValue(DungeonFlow value, IContext context) {
 		return SceneManager.loadedSceneCount > 1 && RoundManager.Instance != null && RoundManager.Instance.dungeonGenerator != null
 			&& RoundManager.Instance.dungeonGenerator.Generator != null && RoundManager.Instance.dungeonGenerator.Generator.DungeonFlow == value;
 	}

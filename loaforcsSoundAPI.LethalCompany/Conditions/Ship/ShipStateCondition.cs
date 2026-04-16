@@ -12,7 +12,7 @@ public class ShipStateCondition : MultipleCondition<ShipStateType> {
 	}
 
 	/// <inheritdoc/>
-	protected override bool CheckValue(ShipStateType value) {
+	protected override bool CheckValue(ShipStateType value, IContext context) {
 		return StartOfRound.Instance != null && value switch {
 			ShipStateType.IN_ORBIT => StartOfRound.Instance.inShipPhase,
 			ShipStateType.LANDING => !StartOfRound.Instance.inShipPhase && !StartOfRound.Instance.shipIsLeaving && !StartOfRound.Instance.shipHasLanded,

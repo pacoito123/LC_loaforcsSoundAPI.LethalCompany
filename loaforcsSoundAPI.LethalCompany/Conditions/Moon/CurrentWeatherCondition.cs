@@ -25,7 +25,7 @@ public class WeatherNameCondition : MultipleCondition<LevelWeatherType> {
     }
 
     /// <inheritdoc/>
-    protected override bool CheckValue(LevelWeatherType value) {
+    protected override bool CheckValue(LevelWeatherType value, IContext context) {
         return SceneManager.loadedSceneCount > 1 && StartOfRound.Instance != null && StartOfRound.Instance.currentLevel != null
             && StartOfRound.Instance.currentLevel.currentWeather == value;
     }

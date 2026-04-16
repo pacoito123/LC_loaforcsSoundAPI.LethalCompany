@@ -31,7 +31,7 @@ public class MoonNameCondition : MultipleCondition<SelectableLevel> {
 	}
 
 	/// <inheritdoc/>
-	protected override bool CheckValue(SelectableLevel value) {
+	protected override bool CheckValue(SelectableLevel value, IContext context) {
 		return SceneManager.loadedSceneCount > 1 && StartOfRound.Instance != null && StartOfRound.Instance.currentLevel == value;
 	}
 }

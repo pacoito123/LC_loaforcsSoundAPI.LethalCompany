@@ -25,7 +25,7 @@ public class TimeOfDayCondition : MultipleCondition<DayMode> {
 	}
 
 	/// <inheritdoc/>
-	protected override bool CheckValue(DayMode value) {
+	protected override bool CheckValue(DayMode value, IContext context) {
 		return SceneManager.loadedSceneCount > 1 && TimeOfDay.Instance != null && TimeOfDay.Instance.dayMode == value;
 	}
 }
