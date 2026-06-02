@@ -38,6 +38,6 @@ public class PlayerStandingOnCondition : MultipleCondition<int, PlayerContext> {
 	/// <inheritdoc/>
 	public override bool EvaluateFallback(IContext context) {
 		return GameNetworkManager.Instance != null && GameNetworkManager.Instance.localPlayerController != null
-			&& EvaluateWithContext(new(context.Source, GameNetworkManager.Instance.localPlayerController));
+			&& EvaluateWithContext(new(context?.Source, GameNetworkManager.Instance.localPlayerController));
 	}
 }

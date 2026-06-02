@@ -44,7 +44,7 @@ public class ShipDoorStateCondition : Condition<ShipDoorContext> {
 	/// <inheritdoc/>
 	public override bool EvaluateFallback(IContext context) {
 		return ShipDoorContext.FallbackShipDoor != null
-			&& EvaluateWithContext(new(context.Source, ShipDoorContext.FallbackShipDoor));
+			&& EvaluateWithContext(new(context?.Source, ShipDoorContext.FallbackShipDoor));
 	}
 
 	/// <inheritdoc/>

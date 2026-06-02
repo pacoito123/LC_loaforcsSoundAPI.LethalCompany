@@ -34,7 +34,7 @@ public class PlayerFearCondition : RangeCondition<float, PlayerContext> {
     /// <inheritdoc/>
     public override bool EvaluateFallback(IContext context) {
         return GameNetworkManager.Instance != null && GameNetworkManager.Instance.localPlayerController != null
-            && EvaluateWithContext(new PlayerContext(context.Source, GameNetworkManager.Instance.localPlayerController));
+            && EvaluateWithContext(new(context?.Source, GameNetworkManager.Instance.localPlayerController));
     }
 
     /// <inheritdoc/>

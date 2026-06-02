@@ -44,7 +44,7 @@ public class VehicleRidingCondition : MultipleCondition<RiderType, VehicleContex
     /// <inheritdoc/>
     public override bool EvaluateFallback(IContext context) {
         return VehicleContext.FallbackVehicle != null
-            && EvaluateWithContext(new(context.Source, VehicleContext.FallbackVehicle));
+            && EvaluateWithContext(new(context?.Source, VehicleContext.FallbackVehicle));
     }
 }
 
