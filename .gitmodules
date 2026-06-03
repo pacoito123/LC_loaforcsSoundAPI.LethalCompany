@@ -1,0 +1,4 @@
+[submodule "loaforcsSoundAPI"]
+	path = loaforcsSoundAPI
+	url = https://github.com/pacoito123/LC_loaforcsSoundAPI.git
+	branch = main
