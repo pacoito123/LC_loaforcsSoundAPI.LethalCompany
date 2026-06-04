@@ -17,6 +17,6 @@ public class PlayerAloneCondition : Condition<PlayerContext> {
 	/// <inheritdoc/>
 	public override bool EvaluateFallback(IContext context) {
 		if (!GameNetworkManager.Instance) return false;
-		return EvaluateWithContext(new(context?.Source, GameNetworkManager.Instance.localPlayerController));
+		return EvaluateWithContext(new PlayerContext(context?.Source, GameNetworkManager.Instance.localPlayerController));
 	}
 }

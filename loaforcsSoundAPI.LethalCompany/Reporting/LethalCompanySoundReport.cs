@@ -25,10 +25,10 @@ static class LethalCompanySoundReport {
 			SoundReportHandler.WriteList("Found Reverb Presets", stream, foundReverbPresets.Select(ReverbPresetToHumanReadable).ToList());
 			SoundReportHandler.WriteList("Found Footstep Surfaces", stream, foundFootstepSurfaces.Select(it => it.surfaceTag).ToList());
 			
-			SoundReportHandler.WriteEnum<PlayerLocationCondition.LocationType>("Player Location Types", stream);
-			SoundReportHandler.WriteEnum<ApparatusStateCondition.StateType>("Apparatus State Types", stream);
+			SoundReportHandler.WriteEnum<LocationType>("Player Location Types", stream);
+			SoundReportHandler.WriteEnum<StateType>("Apparatus State Types", stream);
 			SoundReportHandler.WriteEnum<DayMode>("Time Of Day Types", stream); // :skull:
-			SoundReportHandler.WriteEnum<ShipStateCondition.ShipStateType>("Ship State Types", stream);
+			SoundReportHandler.WriteEnum<ShipStateType>("Ship State Types", stream);
 
 			if (loaforcsSoundAPILethalCompany.CheckSoftDep(LethalLevelLoader.Plugin.ModGUID)) {
 				WriteLLLDataToReport(stream);

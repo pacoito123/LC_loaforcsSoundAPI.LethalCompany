@@ -1,34 +1,42 @@
-﻿using GameNetcodeStuff;
+﻿using System;
 using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
+using loaforcsSoundAPI.SoundPacks.Conditions;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 
 namespace loaforcsSoundAPI.LethalCompany.Conditions.Player;
 
 [SoundAPICondition("LethalCompany:player:location")]
-public class PlayerLocationCondition : Condition<PlayerContext> {
-	public enum LocationType {
-		INSIDE,
-		ON_SHIP,
-		OUTSIDE
-	}
-    
-	public LocationType Value { get; internal set; }
+public class PlayerLocationCondition : MultipleCondition<LocationType, PlayerContext> {
+	protected override string ValidateWarnMessage => $"Value field for a PlayerLocationCondition in SoundPack '{Pack.Name}' is empty or missing!";
 
-	protected override bool EvaluateWithContext(PlayerContext context) {
-		if(!context.Player) return false;
-		if(context.Player.isPlayerDead) return false;
-		if(context.Player.isInsideFactory) {
-			return Value == LocationType.INSIDE;
-		}
-		if(StartOfRound.Instance.shipBounds.bounds.Contains(context.Player.transform.position)) {
-			return Value == LocationType.ON_SHIP;
-		}
-		return Value == LocationType.OUTSIDE;
+	/// <inheritdoc/>
+	protected override bool TryCacheValue(out LocationType value, string match) {
+		return Enum.TryParse(match, ignoreCase: true, out value);
 	}
 
-	protected override bool EvaluateFallback(IContext context) {
+	/// <inheritdoc/>
+	protected override bool TryObtainValueWithContext(out LocationType value, PlayerContext context) {
+		value = default;
+		if (!context.Player) return false;
+		if (context.Player.isPlayerDead) return false;
+
+		value = context.Player.isInsideFactory ? LocationType.INSIDE
+			: context.Player.isInHangarShipRoom ? LocationType.IN_SHIP
+			: context.Player.isInElevator ? LocationType.ON_SHIP
+			: LocationType.OUTSIDE;
+		return true;
+	}
+
+	/// <inheritdoc/>
+	public override bool EvaluateFallback(IContext context) {
 		if (!GameNetworkManager.Instance) return false;
-		return EvaluateWithContext(new PlayerContext(GameNetworkManager.Instance.localPlayerController));
+		return EvaluateWithContext(new PlayerContext(context?.Source, GameNetworkManager.Instance.localPlayerController));
 	}
-	// todo: validate
+}
+
+public enum LocationType : byte {
+	INSIDE,
+	IN_SHIP,
+	ON_SHIP,
+	OUTSIDE
 }

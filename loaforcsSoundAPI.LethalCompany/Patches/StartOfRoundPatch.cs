@@ -3,11 +3,14 @@ using loaforcsSoundAPI.LethalCompany.Conditions;
 using loaforcsSoundAPI.LethalCompany.Reporting;
 using loaforcsSoundAPI.Reporting;
 using loaforcsSoundAPI.Core.Util.Extensions;
+using System;
 
 namespace loaforcsSoundAPI.LethalCompany.Patches;
 
 [HarmonyPatch(typeof(StartOfRound))]
 static class StartOfRoundPatch {
+	internal static event Action StartOfRoundAwake = delegate { };
+
 	[HarmonyPrefix, HarmonyPatch(nameof(StartOfRound.EndOfGame)), HarmonyWrapSafe]
 	static void ResetApparatusState() {
 		ApparatusStateCondition.CurrentApparatusPulled = false;
@@ -15,11 +18,12 @@ static class StartOfRoundPatch {
 
 	[HarmonyPostfix, HarmonyPatch(nameof(StartOfRound.Awake)), HarmonyWrapSafe]
 	static void ReportFootstepSurfaces() {
-		if(SoundReportHandler.CurrentReport == null) return;
-
-		foreach (FootstepSurface surface in StartOfRound.Instance.footstepSurfaces) {
-			LethalCompanySoundReport.foundFootstepSurfaces.AddUnique(surface);
+		if (SoundReportHandler.CurrentReport != null) {
+			foreach (FootstepSurface surface in StartOfRound.Instance.footstepSurfaces) {
+				LethalCompanySoundReport.foundFootstepSurfaces.AddUnique(surface);
+			}
 		}
+		StartOfRoundAwake();
 	}
 
 	// todo
