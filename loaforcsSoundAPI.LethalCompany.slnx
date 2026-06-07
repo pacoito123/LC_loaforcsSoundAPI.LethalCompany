@@ -1,4 +1,5 @@
 ﻿<Solution>
 	<Project Path="loaforcsSoundAPI\loaforcsSoundAPI\loaforcsSoundAPI.csproj" />
+	<Project Path="loaforcsSoundAPI\loaforcsSoundAPI.Patcher\loaforcsSoundAPI.Patcher.csproj" />
 	<Project Path="loaforcsSoundAPI.LethalCompany\loaforcsSoundAPI.LethalCompany.csproj" />
 </Solution>
