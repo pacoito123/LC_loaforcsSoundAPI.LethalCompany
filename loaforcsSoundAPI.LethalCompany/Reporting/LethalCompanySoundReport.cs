@@ -12,6 +12,7 @@ static class LethalCompanySoundReport {
 	internal static readonly HashSet<string> foundMoonNames = [];
 	internal static readonly HashSet<ReverbPreset> foundReverbPresets = [];
 	internal static readonly HashSet<FootstepSurface> foundFootstepSurfaces = [];
+	internal static readonly Dictionary<EnemyType, EnemyBehaviourState[]> foundEnemyBehaviourStates = [];
     
 	internal static void Init() {
 		SoundReportHandler.AddReportSection("Lethal Company", (stream, _) => {
@@ -19,8 +20,12 @@ static class LethalCompanySoundReport {
 			
 			SoundReportHandler.WriteList("Found Dungeon Types", stream, foundDungeonTypes);
 			SoundReportHandler.WriteList("Found Moon Names", stream, foundMoonNames);
-			SoundReportHandler.WriteList("Found Reverb Presets", stream, foundReverbPresets.Select(ReverbPresetToHumanReadable).ToList());
-			SoundReportHandler.WriteList("Found Footstep Surfaces", stream, foundFootstepSurfaces.Select(it => it.surfaceTag).ToList());
+			SoundReportHandler.WriteList("Found Reverb Presets", stream, [.. foundReverbPresets.Select(ReverbPresetToHumanReadable)]);
+			SoundReportHandler.WriteList("Found Footstep Surfaces", stream, [.. foundFootstepSurfaces.Select(it => it.surfaceTag)]);
+
+			foreach (EnemyType enemyType in foundEnemyBehaviourStates.Keys) {
+				SoundReportHandler.WriteList($"Found '{enemyType.enemyName}' Behaviour States", stream, [.. foundEnemyBehaviourStates[enemyType].Select(enemyState => enemyState.name)]);
+			}
 			
 			SoundReportHandler.WriteEnum<LocationType>("Player Location Types", stream);
 			SoundReportHandler.WriteEnum<StateType>("Apparatus State Types", stream);
