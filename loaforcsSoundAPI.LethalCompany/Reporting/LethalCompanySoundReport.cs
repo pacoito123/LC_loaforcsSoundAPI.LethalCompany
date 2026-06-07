@@ -3,6 +3,7 @@ using System.Linq;
 using loaforcsSoundAPI.LethalCompany.Conditions;
 using loaforcsSoundAPI.LethalCompany.Conditions.Player;
 using loaforcsSoundAPI.LethalCompany.Conditions.Ship;
+using loaforcsSoundAPI.LethalCompany.Conditions.Vehicle;
 using loaforcsSoundAPI.Reporting;
 
 namespace loaforcsSoundAPI.LethalCompany.Reporting;
@@ -13,11 +14,11 @@ static class LethalCompanySoundReport {
 	internal static readonly HashSet<ReverbPreset> foundReverbPresets = [];
 	internal static readonly HashSet<FootstepSurface> foundFootstepSurfaces = [];
 	internal static readonly Dictionary<EnemyType, EnemyBehaviourState[]> foundEnemyBehaviourStates = [];
-    
+
 	internal static void Init() {
 		SoundReportHandler.AddReportSection("Lethal Company", (stream, _) => {
 			stream.WriteLine($"Version: `{MyPluginInfo.PLUGIN_VERSION}` <br/>");
-			
+
 			SoundReportHandler.WriteList("Found Dungeon Types", stream, foundDungeonTypes);
 			SoundReportHandler.WriteList("Found Moon Names", stream, foundMoonNames);
 			SoundReportHandler.WriteList("Found Reverb Presets", stream, [.. foundReverbPresets.Select(ReverbPresetToHumanReadable)]);
@@ -26,18 +27,19 @@ static class LethalCompanySoundReport {
 			foreach (EnemyType enemyType in foundEnemyBehaviourStates.Keys) {
 				SoundReportHandler.WriteList($"Found '{enemyType.enemyName}' Behaviour States", stream, [.. foundEnemyBehaviourStates[enemyType].Select(enemyState => enemyState.name)]);
 			}
-			
+
 			SoundReportHandler.WriteEnum<LocationType>("Player Location Types", stream);
 			SoundReportHandler.WriteEnum<StateType>("Apparatus State Types", stream);
 			SoundReportHandler.WriteEnum<DayMode>("Time Of Day Types", stream); // :skull:
 			SoundReportHandler.WriteEnum<ShipStateType>("Ship State Types", stream);
+			SoundReportHandler.WriteEnum<RiderType>("Vehicle Riding Types", stream);
 
 			/* if(LethalLevelLoaderCompatibility.Enabled) {
 				LethalLevelLoaderCompatibility.WriteLLLDataToReport(stream);
 			} */
 		});
 	}
-	
+
 	static string ReverbPresetToHumanReadable(ReverbPreset preset) {
 		if (preset == null) return "<empty>";
 
@@ -48,7 +50,7 @@ static class LethalCompanySoundReport {
 		result += $"changeDryLevel: {preset.changeDryLevel}, dryLevel: {preset.dryLevel} <br/>\n";
 		result += $"changeHighFreq: {preset.changeHighFreq}, highFreq: {preset.highFreq} <br/>\n";
 		result += $"changeLowFreq: {preset.changeLowFreq}, lowFreq: {preset.lowFreq} <br/>\n";
-		
+
 		return result;
 	}
 }
