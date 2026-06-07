@@ -9,10 +9,16 @@ namespace loaforcsSoundAPI.LethalCompany.Patches;
 [HarmonyPatch(typeof(PlayerControllerB))]
 static class PlayerControllerPatch {
 	[HarmonyPatch(nameof(PlayerControllerB.Start)), HarmonyPrefix]
-	static void UpdatePlayerContexts(PlayerControllerB __instance) {
-		AudioSourceAdditionalData.GetOrCreate(__instance.movementAudio).CurrentContext = new PlayerContext(__instance.movementAudio, __instance);
-		AudioSourceAdditionalData.GetOrCreate(__instance.statusEffectAudio).CurrentContext = new PlayerContext(__instance.statusEffectAudio, __instance);
-		AudioSourceAdditionalData.GetOrCreate(__instance.waterBubblesAudio).CurrentContext = new PlayerContext(__instance.waterBubblesAudio, __instance);
+	static void UpdatePlayerContexts(PlayerControllerB __instance, AudioSource ___movementAudio, AudioSource ___statusEffectAudio, AudioSource ___waterBubblesAudio) {
+		if (___movementAudio) {
+			AudioSourceAdditionalData.GetOrCreate(___movementAudio).CurrentContext = new PlayerContext(___movementAudio, __instance);
+		}
+		if (___statusEffectAudio) {
+			AudioSourceAdditionalData.GetOrCreate(___statusEffectAudio).CurrentContext = new PlayerContext(___statusEffectAudio, __instance);
+		}
+		if (___waterBubblesAudio) {
+			AudioSourceAdditionalData.GetOrCreate(___waterBubblesAudio).CurrentContext = new PlayerContext(___waterBubblesAudio, __instance);
+		}
 
 		foreach (AudioSource source in __instance.GetComponentsInChildren<AudioSource>(includeInactive: true)) {
 			AudioSourceAdditionalData.GetOrCreate(source).CurrentContext = new PlayerContext(source, __instance); ;

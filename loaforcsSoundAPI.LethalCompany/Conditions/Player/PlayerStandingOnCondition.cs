@@ -25,6 +25,7 @@ public class PlayerStandingOnCondition : MultipleCondition<FootstepSurface, Play
 
 		if (!StartOfRound.Instance) return false;
 		if (StartOfRound.Instance.footstepSurfaces == null) return false;
+		if (string.IsNullOrEmpty(match)) return false;
 
 		value = Array.Find(StartOfRound.Instance.footstepSurfaces, surface => surface != null
 			&& string.Equals(surface.surfaceTag, match, StringComparison.InvariantCultureIgnoreCase));

@@ -23,10 +23,12 @@ public class MoonNameCondition : MultipleCondition<SelectableLevel> {
 	protected override bool TryCacheValue(out SelectableLevel value, string match) {
 		value = null;
 
-		if (StartOfRound.Instance == null || StartOfRound.Instance.levels == null) return false;
+		if (!StartOfRound.Instance) return false;
+		if (StartOfRound.Instance.levels == null) return false;
+		if (string.IsNullOrEmpty(match)) return false;
+
 		value = Array.Find(StartOfRound.Instance.levels, level => level != null &&
 			string.Equals(level.name, match, StringComparison.InvariantCultureIgnoreCase));
-
 		return value != null;
 	}
 

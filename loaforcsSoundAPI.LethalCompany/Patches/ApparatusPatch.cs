@@ -1,14 +1,15 @@
 ﻿using HarmonyLib;
 using loaforcsSoundAPI.LethalCompany.Conditions;
+using UnityEngine;
 
 namespace loaforcsSoundAPI.LethalCompany.Patches;
 
 [HarmonyPatch(typeof(LungProp))]
 static class ApparatusPatch {
-	[HarmonyPatch(nameof(LungProp.EquipItem)), HarmonyPrefix, HarmonyWrapSafe]
-	static void OnApparatusPull(LungProp __instance) {
-		if (__instance.isLungDocked) {
-			ApparatusStateCondition.CurrentApparatusPulled = true;
-		}
+	[HarmonyPatch(nameof(LungProp.EquipItem)), HarmonyPostfix]
+	static void OnApparatusPull(Coroutine ___disconnectAnimation) {
+		if (___disconnectAnimation == null) return;
+
+		ApparatusStateCondition.CurrentApparatusPulled = true;
 	}
 }

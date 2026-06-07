@@ -23,7 +23,9 @@ public class DungeonNameCondition : MultipleCondition<DungeonFlow> {
 	/// <inheritdoc/>
 	protected override bool TryCacheValue(out DungeonFlow value, string match) {
 		value = null;
+
 		if (!RoundManager.Instance) return false;
+		if (string.IsNullOrEmpty(match)) return false;
 
 		IndoorMapType[] dungeonFlowTypes = RoundManager.Instance.dungeonFlowTypes;
 		if (dungeonFlowTypes == null) return false;

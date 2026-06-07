@@ -9,6 +9,7 @@ using UnityEngine;
 namespace loaforcsSoundAPI.LethalCompany.Conditions.Player;
 
 [SoundAPICondition("LethalCompany:player:audio_reverb")]
+[SoundAPICondition("LethalCompany:player:reverb_preset")]
 public class AudioReverbCondition : MultipleCondition<ReverbPreset, PlayerContext> {
 	protected override string ValidateWarnMessage => $"Value field for an AudioReverbCondition in SoundPack '{Pack.Name}' is empty or missing!";
 
@@ -29,15 +30,15 @@ public class AudioReverbCondition : MultipleCondition<ReverbPreset, PlayerContex
 	}
 
 	/// <inheritdoc/>
-	protected override void OnValuesPopulated() {
-		StartOfRoundPatch.StartOfRoundAwake -= PopulateValues;
-	}
+	protected override void OnValuesPopulated() => StartOfRoundPatch.StartOfRoundAwake -= PopulateValues;
 
 	/// <inheritdoc/>
 	protected override bool TryCacheValue(out ReverbPreset value, string match) {
-		value = null!;
+		value = null;
 
-		if (_cachedReverbPresets == null || _allReverbPresets == null) return false;
+		if (_allReverbPresets == null) return false;
+		if (_cachedReverbPresets == null) return false;
+		if (string.IsNullOrEmpty(match)) return false;
 
 		match = match.ToLowerInvariant();
 		if (!_cachedReverbPresets.TryGetValue(match, out value)) {
@@ -45,7 +46,7 @@ public class AudioReverbCondition : MultipleCondition<ReverbPreset, PlayerContex
 				value = _allReverbPresets[i];
 				if (value != null && string.Equals(value.name, match, StringComparison.InvariantCultureIgnoreCase)
 					&& _cachedReverbPresets.TryAdd(match, value)) break;
-				value = null!;
+				value = null;
 			}
 		}
 

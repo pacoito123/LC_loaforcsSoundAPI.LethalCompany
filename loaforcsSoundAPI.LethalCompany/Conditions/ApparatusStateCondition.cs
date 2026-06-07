@@ -29,10 +29,13 @@ public class ApparatusStateCondition : Condition {
 
 	/// <inheritdoc/>
 	public override bool Evaluate(IContext context) {
-		StateType currentState = CurrentApparatusPulled ? StateType.PULLED : StateType.PLUGGED_IN;
-		if (currentState != (Value ?? StateType.PULLED)) return false;
-		if (!OnceAfterPull.GetValueOrDefault()) return true;
-		return exhaustedSources.Add(context.Source);
+		bool result = Value == (CurrentApparatusPulled ? StateType.PULLED : StateType.PLUGGED_IN);
+
+		if (OnceAfterPull.HasValue) {
+			result = exhaustedSources.Add(context.Source);
+		}
+
+		return result;
 	}
 
 	/// <inheritdoc/>
