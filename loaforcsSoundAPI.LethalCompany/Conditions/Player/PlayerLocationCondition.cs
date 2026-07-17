@@ -1,35 +1,31 @@
-﻿using System;
-using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
-using loaforcsSoundAPI.SoundPacks.Conditions;
+﻿using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
+using loaforcsSoundAPI.SoundPacks.Data;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 
 namespace loaforcsSoundAPI.LethalCompany.Conditions.Player;
 
 [SoundAPICondition("LethalCompany:player:location")]
-public class PlayerLocationCondition : MultipleCondition<LocationType, PlayerContext> {
-	protected override string ValidateWarnMessage => $"Value field for a PlayerLocationCondition in SoundPack '{Pack.Name}' is empty or missing!";
+public class PlayerLocationCondition : Condition<PlayerContext> {
+	public EnumsRegistry<LocationType> Value { get; private set; }
 
 	/// <inheritdoc/>
-	protected override bool TryCacheValue(out LocationType value, string match) {
-		return Enum.TryParse(match, ignoreCase: true, out value);
-	}
-
-	/// <inheritdoc/>
-	protected override bool TryObtainValueWithContext(out LocationType value, PlayerContext context) {
-		value = default;
+	public override bool EvaluateWithContext(PlayerContext context) {
 		if (!context.Player) return false;
 		if (context.Player.isPlayerDead) return false;
 
-		value = context.Player.isInsideFactory ? LocationType.INSIDE
+		LocationType currentLocation = context.Player.isInsideFactory ? LocationType.INSIDE
 			: context.Player.isInHangarShipRoom ? LocationType.IN_SHIP
 			: context.Player.isInElevator ? LocationType.ON_SHIP
 			: LocationType.OUTSIDE;
-		return true;
+
+		return Value.ContainsValue(currentLocation);
 	}
 
 	/// <inheritdoc/>
 	public override bool EvaluateFallback(IContext context) {
 		if (!GameNetworkManager.Instance) return false;
+		if (!GameNetworkManager.Instance.localPlayerController) return false;
+
 		return EvaluateWithContext(new PlayerContext(context?.Source, GameNetworkManager.Instance.localPlayerController));
 	}
 }

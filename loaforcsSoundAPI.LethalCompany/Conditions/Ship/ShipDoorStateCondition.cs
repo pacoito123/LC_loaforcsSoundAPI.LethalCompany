@@ -25,19 +25,14 @@ public class ShipDoorStateCondition : Condition<ShipDoorContext> {
 
     /// <inheritdoc/>
     public override bool EvaluateWithContext(ShipDoorContext context) {
-        bool result = true;
+        if (!context.ShipDoor) return false;
 
-        if (Closed.HasValue && StartOfRound.Instance != null) {
-            result = StartOfRound.Instance.hangarDoorsClosed == Closed.Value;
+        bool result = !Closed.HasValue || StartOfRound.Instance.hangarDoorsClosed == Closed.Value;
+        if (result && !string.IsNullOrEmpty(DoorPower)) {
+            result = DoorPowerRange.EvaluateRangeOperator(context.ShipDoor.doorPower * 100.0f); // Evaluate value as a percentage.
         }
-
-        if (context.ShipDoor != null) {
-            if (result && !string.IsNullOrEmpty(DoorPower)) {
-                result = DoorPowerRange.EvaluateRangeOperator(context.ShipDoor.doorPower * 100.0f); // Evaluate value as a percentage.
-            }
-            if (result && Overheated.HasValue) {
-                result = context.ShipDoor.overheated == Overheated.Value;
-            }
+        if (result && Overheated.HasValue) {
+            result = context.ShipDoor.overheated == Overheated.Value;
         }
 
         return result;
@@ -46,6 +41,7 @@ public class ShipDoorStateCondition : Condition<ShipDoorContext> {
     /// <inheritdoc/>
     public override bool EvaluateFallback(IContext context) {
         if (!ShipDoorContext.FallbackShipDoor) return false;
+
         return EvaluateWithContext(new ShipDoorContext(context?.Source, ShipDoorContext.FallbackShipDoor));
     }
 

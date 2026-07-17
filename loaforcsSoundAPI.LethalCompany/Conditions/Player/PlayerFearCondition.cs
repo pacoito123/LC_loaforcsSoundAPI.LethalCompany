@@ -24,21 +24,17 @@ public class PlayerFearCondition : RangeCondition<float> {
 
     /// <inheritdoc/>
     public override bool Evaluate(IContext context) {
-        bool result = true;
+        if (!StartOfRound.Instance) return false;
+        if (!GameNetworkManager.Instance) return false;
+        if (!GameNetworkManager.Instance.localPlayerController) return false;
+        if (GameNetworkManager.Instance.localPlayerController.isPlayerDead) return false;
 
-        if (StartOfRound.Instance != null) {
-            if (IsIncreasing.HasValue) {
-                result = StartOfRound.Instance.fearLevelIncreasing == IsIncreasing.Value;
-            }
-            if (result) {
-                result = EvaluateRangeOperator(StartOfRound.Instance.fearLevel);
-            }
+        bool result = EvaluateRangeOperator(StartOfRound.Instance.fearLevel);
+        if (result && IsIncreasing.HasValue) {
+            result = StartOfRound.Instance.fearLevelIncreasing == IsIncreasing.Value;
         }
-
-        if (GameNetworkManager.Instance != null && GameNetworkManager.Instance.localPlayerController != null) {
-            if (result && !GameNetworkManager.Instance.localPlayerController.isPlayerDead) {
-                EvaluateRangeOperator(GameNetworkManager.Instance.localPlayerController.timeSinceFearLevelUp, TimeSinceIncreaseRange);
-            }
+        if (result && !string.IsNullOrEmpty(TimeSinceIncrease)) {
+            EvaluateRangeOperator(GameNetworkManager.Instance.localPlayerController.timeSinceFearLevelUp, TimeSinceIncreaseRange);
         }
 
         return result;
