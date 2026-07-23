@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
 using loaforcsSoundAPI.LethalCompany.Data;
@@ -13,7 +14,7 @@ public sealed class EnemyAnimatorCondition : AnimatorCondition<EnemyContext> {
     protected override string ValidateWarnMessage => $"A parameter for an EnemyAnimatorCondition in SoundPack '{Pack.Name}' is empty or missing!";
 
     [CanBeNull]
-    public EnemiesRegistry EnemyName { get; private set; }
+    public List<EnemyContentReference> EnemyName { get; private set; }
 
     /// <inheritdoc/>
     public override bool EvaluateWithContext(EnemyContext context) {
@@ -21,7 +22,7 @@ public sealed class EnemyAnimatorCondition : AnimatorCondition<EnemyContext> {
 
         bool result = base.EvaluateWithContext(context);
         if (result && EnemyName != null) {
-            result = EnemyName.ContainsValue(context.Enemy.enemyType);
+            result = EnemyName.Find(reference => reference.Value == context.Enemy.enemyType) != null;
         }
 
         return result;

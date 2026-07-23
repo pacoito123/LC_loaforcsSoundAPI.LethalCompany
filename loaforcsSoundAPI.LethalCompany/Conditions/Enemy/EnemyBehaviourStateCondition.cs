@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
 using loaforcsSoundAPI.LethalCompany.Data;
@@ -12,7 +13,7 @@ public class EnemyBehaviourStateCondition : RangeCondition<int, EnemyContext> {
     protected override RangeOperator<int> DefaultRange => new(0, int.MaxValue);
 
     [CanBeNull]
-    public EnemiesRegistry EnemyName { get; private set; }
+    public List<EnemyContentReference> EnemyName { get; private set; }
 
     /// <inheritdoc/>
 	public override bool EvaluateWithContext(EnemyContext context) {
@@ -20,7 +21,7 @@ public class EnemyBehaviourStateCondition : RangeCondition<int, EnemyContext> {
 
         bool result = EvaluateRangeOperator(context.Enemy.currentBehaviourStateIndex);
         if (result && EnemyName != null) {
-            result = EnemyName.ContainsValue(context.Enemy.enemyType);
+            result = EnemyName.Find(reference => reference.Value == context.Enemy.enemyType) != null;
         }
 
         return result;

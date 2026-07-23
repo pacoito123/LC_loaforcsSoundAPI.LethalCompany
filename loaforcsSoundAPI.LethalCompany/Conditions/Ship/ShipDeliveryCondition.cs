@@ -1,6 +1,5 @@
-using System;
+using System.Collections.Generic;
 using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
-using loaforcsSoundAPI.SoundPacks.Conditions;
 using loaforcsSoundAPI.SoundPacks.Data;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 
@@ -8,7 +7,7 @@ namespace loaforcsSoundAPI.LethalCompany.Conditions.Ship;
 
 [SoundAPICondition("LethalCompany:ship:delivery")]
 public class ShipDeliveryCondition : Condition<DropshipContext> {
-    public EnumsRegistry<DropshipStateType> Value { get; private set; }
+    public List<EnumReference<DropshipStateType>> Value { get; private set; }
 
     /// <inheritdoc/>
     public override bool EvaluateWithContext(DropshipContext context) {
@@ -21,7 +20,7 @@ public class ShipDeliveryCondition : Condition<DropshipContext> {
             : context.Dropship.untetheredVehicle ? DropshipStateType.DROPPED_VEHICLE
             : DropshipStateType.LEAVING;
 
-        return Value.ContainsValue(currentDropshipState);
+        return Value.FindIndex(reference => reference.Value == currentDropshipState) != -1;
     }
 
     /// <inheritdoc/>

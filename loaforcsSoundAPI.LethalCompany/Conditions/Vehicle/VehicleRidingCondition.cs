@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
 using loaforcsSoundAPI.SoundPacks.Data;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
@@ -6,20 +7,20 @@ namespace loaforcsSoundAPI.LethalCompany.Conditions.Vehicle;
 
 [SoundAPICondition("LethalCompany:vehicle:riding")]
 public class VehicleRidingCondition : Condition<VehicleContext> {
-    public EnumsRegistry<RiderType> Value { get; private set; }
+    public List<EnumReference<RiderType>> Value { get; private set; }
 
     /// <inheritdoc/>
     public override bool EvaluateWithContext(VehicleContext context) {
         if (!context.Vehicle) return false;
         if (context.Vehicle.carDestroyed) return false;
-        if (context.Vehicle.vehicleID != 0) return false; // TODO: Vehicle name filtering, for modded vehicles. Conditionsupports only vanilla Cruiser for now.
+        if (context.Vehicle.vehicleID != 0) return false; // TODO: Vehicle name filtering, for modded vehicles. Condition supports only vanilla Cruiser for now.
 
         RiderType currentRiderType = context.Vehicle.localPlayerInControl ? RiderType.DRIVER
             : context.Vehicle.localPlayerInPassengerSeat ? RiderType.PASSENGER
             : context.Vehicle.physicsRegion.hasLocalPlayer ? RiderType.IN_BACK // TODO: Can match while on top or at the front.
             : RiderType.NONE;
 
-        return Value.ContainsValue(currentRiderType);
+        return Value.FindIndex(reference => reference.Value == currentRiderType) != -1;
     }
 
     /// <inheritdoc/>

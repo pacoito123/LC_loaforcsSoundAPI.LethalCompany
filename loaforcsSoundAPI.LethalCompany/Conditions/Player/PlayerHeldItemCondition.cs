@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
 using loaforcsSoundAPI.LethalCompany.Data;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
@@ -6,7 +7,7 @@ namespace loaforcsSoundAPI.LethalCompany.Conditions.Player;
 
 [SoundAPICondition("LethalCompany:player:held_item")]
 public class PlayerHeldItemCondition : Condition<PlayerContext> {
-    public ItemsRegistry Value { get; private set; }
+    public List<ItemContentReference> Value { get; private set; }
 
     /// <inheritdoc/>
 	public override bool EvaluateWithContext(PlayerContext context) {
@@ -14,7 +15,7 @@ public class PlayerHeldItemCondition : Condition<PlayerContext> {
         if (!context.Player.currentlyHeldObjectServer) return false;
         if (context.Player.isPlayerDead) return false;
 
-        return Value.ContainsValue(context.Player.currentlyHeldObjectServer.itemProperties);
+        return Value.Find(reference => reference.Value == context.Player.currentlyHeldObjectServer.itemProperties) != null;
     }
 
     /// <inheritdoc/>

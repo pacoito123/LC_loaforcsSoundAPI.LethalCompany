@@ -1,4 +1,5 @@
-﻿using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
+﻿using System.Collections.Generic;
+using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
 using loaforcsSoundAPI.SoundPacks.Data;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 
@@ -6,7 +7,7 @@ namespace loaforcsSoundAPI.LethalCompany.Conditions.Player;
 
 [SoundAPICondition("LethalCompany:player:location")]
 public class PlayerLocationCondition : Condition<PlayerContext> {
-	public EnumsRegistry<LocationType> Value { get; private set; }
+	public List<EnumReference<LocationType>> Value { get; private set; }
 
 	/// <inheritdoc/>
 	public override bool EvaluateWithContext(PlayerContext context) {
@@ -18,7 +19,7 @@ public class PlayerLocationCondition : Condition<PlayerContext> {
 			: context.Player.isInElevator ? LocationType.ON_SHIP
 			: LocationType.OUTSIDE;
 
-		return Value.ContainsValue(currentLocation);
+		return Value.FindIndex(reference => reference.Value == currentLocation) != -1;
 	}
 
 	/// <inheritdoc/>

@@ -1,4 +1,5 @@
-﻿using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
+﻿using System.Collections.Generic;
+using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
 using loaforcsSoundAPI.LethalCompany.Data;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 
@@ -7,13 +8,13 @@ namespace loaforcsSoundAPI.LethalCompany.Conditions.Player;
 [SoundAPICondition("LethalCompany:player:audio_reverb")]
 [SoundAPICondition("LethalCompany:player:reverb_preset")]
 public class AudioReverbCondition : Condition<PlayerContext> {
-	public ReverbPresetsRegistry Value { get; private set; }
+	public List<ReverbPresetContentReference> Value { get; private set; }
 
 	/// <inheritdoc/>
 	public override bool EvaluateWithContext(PlayerContext context) {
 		if (!context.Player) return false;
 
-		return Value.ContainsValue(context.Player.reverbPreset);
+		return Value.Find(reference => reference.Value == context.Player.reverbPreset) != null;
 	}
 
 	/// <inheritdoc/>

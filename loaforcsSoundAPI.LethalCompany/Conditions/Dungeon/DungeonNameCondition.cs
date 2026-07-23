@@ -1,4 +1,5 @@
-﻿using loaforcsSoundAPI.LethalCompany.Data;
+﻿using System.Collections.Generic;
+using loaforcsSoundAPI.LethalCompany.Data;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 using UnityEngine.SceneManagement;
 
@@ -6,7 +7,7 @@ namespace loaforcsSoundAPI.LethalCompany.Conditions.Dungeon;
 
 [SoundAPICondition("LethalCompany:dungeon:name")]
 public class DungeonNameCondition : Condition {
-	public DungeonsRegistry Value { get; private set; }
+	public List<DungeonContentReference> Value { get; private set; }
 
 	/// <inheritdoc/>
 	public override bool Evaluate(IContext context) {
@@ -14,6 +15,6 @@ public class DungeonNameCondition : Condition {
 		if (!RoundManager.Instance) return false;
 		if (!RoundManager.Instance.dungeonGenerator) return false;
 
-		return Value.ContainsValue(RoundManager.Instance.dungeonGenerator.Generator?.DungeonFlow);
+		return Value.Find(static reference => reference.Value == RoundManager.Instance.dungeonGenerator.Generator?.DungeonFlow) != null;
 	}
 }
