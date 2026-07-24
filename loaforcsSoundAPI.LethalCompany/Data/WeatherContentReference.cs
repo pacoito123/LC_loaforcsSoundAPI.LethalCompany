@@ -8,7 +8,7 @@ public class WeatherContentReference : ContentReference<LevelWeatherType> {
     public WeatherContentReference(string input) : base(input) => StartOfRoundPatch.StartOfRoundAwake += Resolve;
 
     /// <inheritdoc/>
-    protected override void OnResolved() => StartOfRoundPatch.StartOfRoundAwake -= Resolve;
+    protected override void OnResolved(bool success) => StartOfRoundPatch.StartOfRoundAwake -= Resolve;
 
     /// <inheritdoc/>
     protected override bool TryResolve(string input, out LevelWeatherType value) => Enum.TryParse(input, ignoreCase: true, out value);

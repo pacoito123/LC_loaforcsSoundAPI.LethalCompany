@@ -9,7 +9,7 @@ public class DungeonContentReference : ContentReference<DungeonFlow> {
     public DungeonContentReference(string input) : base(input) => RoundManagerPatch.OnRoundManagerAwake += Resolve;
 
     /// <inheritdoc/>
-    protected override void OnResolved() => RoundManagerPatch.OnRoundManagerAwake -= Resolve;
+    protected override void OnResolved(bool success) => RoundManagerPatch.OnRoundManagerAwake -= Resolve;
 
     /// <inheritdoc/>
 	protected override bool TryResolve(string input, out DungeonFlow value) {
