@@ -10,6 +10,6 @@ static class ApparatusPatch {
 	static void OnApparatusPull(Coroutine ___disconnectAnimation) {
 		if (___disconnectAnimation == null) return;
 
-		ApparatusStateCondition.CurrentApparatusPulled = true;
+		ApparatusStateCondition.CurrentApparatusState = StateType.PULLED;
 	}
 }

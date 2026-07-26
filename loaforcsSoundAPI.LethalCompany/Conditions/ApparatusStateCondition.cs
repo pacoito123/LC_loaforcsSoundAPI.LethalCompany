@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using loaforcsSoundAPI.Core.Data;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 using UnityEngine;
@@ -8,12 +9,13 @@ namespace loaforcsSoundAPI.LethalCompany.Conditions;
 
 [SoundAPICondition("LethalCompany:apparatus_state")]
 public class ApparatusStateCondition : Condition {
-	internal static bool CurrentApparatusPulled = false;
+	public static StateType CurrentApparatusState { get; internal set; } = StateType.PLUGGED_IN;
 
 	readonly HashSet<AudioSource> exhaustedSources = [];
 
 	public StateType? Value { get; private set; }
 
+	[CanBeNull]
 	public bool? OnceAfterPull { get; private set; }
 
 	/// <inheritdoc/>
@@ -23,15 +25,15 @@ public class ApparatusStateCondition : Condition {
 	}
 
 	void ResetApparatusState(Scene scene) {
-		CurrentApparatusPulled = false;
+		CurrentApparatusState = StateType.PLUGGED_IN;
 		exhaustedSources.Clear();
 	}
 
 	/// <inheritdoc/>
 	public override bool Evaluate(IContext context) {
-		bool result = Value == (CurrentApparatusPulled ? StateType.PULLED : StateType.PLUGGED_IN);
+		bool result = Value == CurrentApparatusState;
 
-		if (OnceAfterPull.HasValue) {
+		if (result && OnceAfterPull.HasValue) {
 			result = exhaustedSources.Add(context.Source);
 		}
 
