@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using LethalLevelLoader;
+using loaforcsSoundAPI.Core.Data;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 
 namespace loaforcsSoundAPI.LethalCompany.Conditions.OtherMods.LethalLevelLoader;
@@ -31,4 +32,15 @@ public class LLLTagCondition<T>(Func<T> generator) : Condition where T : Extende
 
 		return true;
 	}
+
+    /// <inheritdoc/>
+    public override List<IValidatable.ValidationResult> Validate() {
+        if (Value == null || Value.Count == 0) {
+            return [
+                new IValidatable.ValidationResult(IValidatable.ResultType.FAIL, $"Value field for one LLLTagCondition of type '{typeof(T).GetType()}' in SoundPack '{Pack.Name}' is empty or missing!")
+            ];
+        }
+
+        return [];
+    }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using loaforcsSoundAPI.Core.Data;
 using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
 using loaforcsSoundAPI.LethalCompany.Data;
 using loaforcsSoundAPI.SoundPacks.Conditions;
@@ -25,6 +26,17 @@ public class EnemyBehaviourStateCondition : RangeCondition<int, EnemyContext> {
         }
 
         return result;
+    }
+
+    /// <inheritdoc/>
+    public override List<IValidatable.ValidationResult> Validate() {
+        if (EnemyName != null && EnemyName.Count == 0) {
+            return [
+                new IValidatable.ValidationResult(IValidatable.ResultType.FAIL, $"EnemyName field for one \"LethalCompany:enemy:behaviour_state\" condition in SoundPack '{Pack.Name}' is empty!")
+            ];
+        }
+
+        return base.Validate();
     }
 
     /// <inheritdoc/>

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using loaforcsSoundAPI.Core.Data;
 using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
 using loaforcsSoundAPI.SoundPacks.Data;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
@@ -29,6 +30,17 @@ public class ShipDeliveryCondition : Condition<DropshipContext> {
 
         return EvaluateWithContext(new DropshipContext(context?.Source, DropshipContext.FallbackDropship));
     }
+
+	/// <inheritdoc/>
+	public override List<IValidatable.ValidationResult> Validate() {
+		if (Value == null || Value.Count == 0) {
+			return [
+				new IValidatable.ValidationResult(IValidatable.ResultType.FAIL, $"Value field for one \"LethalCompany:ship:delivery\" condition in SoundPack '{Pack.Name}' is empty or missing!")
+			];
+		}
+
+		return [];
+	}
 }
 
 public enum DropshipStateType : byte {

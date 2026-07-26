@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using loaforcsSoundAPI.Core.Data;
 using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
 using loaforcsSoundAPI.SoundPacks.Data;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
@@ -28,6 +29,17 @@ public class PlayerLocationCondition : Condition<PlayerContext> {
 		if (!GameNetworkManager.Instance.localPlayerController) return false;
 
 		return EvaluateWithContext(new PlayerContext(context?.Source, GameNetworkManager.Instance.localPlayerController));
+	}
+
+	/// <inheritdoc/>
+	public override List<IValidatable.ValidationResult> Validate() {
+		if (Value == null || Value.Count == 0) {
+			return [
+				new IValidatable.ValidationResult(IValidatable.ResultType.FAIL, $"Value field for one \"LethalCompany:player:location\" condition in SoundPack '{Pack.Name}' is empty or missing!")
+			];
+		}
+
+		return [];
 	}
 }
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using loaforcsSoundAPI.Core.Data;
 using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
 using loaforcsSoundAPI.LethalCompany.Data;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
@@ -25,4 +26,15 @@ public class PlayerHeldItemCondition : Condition<PlayerContext> {
 
         return EvaluateWithContext(new PlayerContext(context?.Source, GameNetworkManager.Instance.localPlayerController));
     }
+
+	/// <inheritdoc/>
+	public override List<IValidatable.ValidationResult> Validate() {
+		if (Value == null || Value.Count == 0) {
+			return [
+				new IValidatable.ValidationResult(IValidatable.ResultType.FAIL, $"Value field for one \"LethalCompany:player:held_item\" condition in SoundPack '{Pack.Name}' is empty or missing!")
+			];
+		}
+
+		return [];
+	}
 }

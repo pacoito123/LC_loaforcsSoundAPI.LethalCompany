@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using loaforcsSoundAPI.Core.Data;
 using loaforcsSoundAPI.LethalCompany.Data;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 using UnityEngine.SceneManagement;
@@ -15,5 +16,16 @@ public class MoonNameCondition : Condition {
 		if (!StartOfRound.Instance) return false;
 
 		return Value.Find(reference => reference.Value == StartOfRound.Instance.currentLevel) != null;
+	}
+
+	/// <inheritdoc/>
+	public override List<IValidatable.ValidationResult> Validate() {
+		if (Value == null || Value.Count == 0) {
+			return [
+				new IValidatable.ValidationResult(IValidatable.ResultType.FAIL, $"Value field for one \"LethalCompany:moon:name\" condition in SoundPack '{Pack.Name}' is empty or missing!")
+			];
+		}
+
+		return [];
 	}
 }

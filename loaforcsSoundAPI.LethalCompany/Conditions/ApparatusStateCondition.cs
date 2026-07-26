@@ -42,8 +42,12 @@ public class ApparatusStateCondition : Condition {
 
 	/// <inheritdoc/>
 	public override List<IValidatable.ValidationResult> Validate() {
-		return Value.HasValue ? [] : [new(IValidatable.ResultType.FAIL,
-			$"Value field for one \"LethalCompany:apparatus_state\" condition in SoundPack '{Pack.Name}' is empty or missing!")];
+		if (!Value.HasValue) {
+			return [
+				new IValidatable.ValidationResult(IValidatable.ResultType.FAIL, $"Value field for one \"LethalCompany:apparatus_state\" condition in SoundPack '{Pack.Name}' is empty or missing!")
+			];
+		}
+		return [];
 	}
 }
 

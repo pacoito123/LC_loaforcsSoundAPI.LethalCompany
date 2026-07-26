@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using loaforcsSoundAPI.Core.Data;
 using loaforcsSoundAPI.LethalCompany.Data;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 using UnityEngine.SceneManagement;
@@ -16,5 +17,16 @@ public class DungeonNameCondition : Condition {
 		if (!RoundManager.Instance.dungeonGenerator) return false;
 
 		return Value.Find(static reference => reference.Value == RoundManager.Instance.dungeonGenerator.Generator?.DungeonFlow) != null;
+	}
+
+	/// <inheritdoc/>
+	public override List<IValidatable.ValidationResult> Validate() {
+		if (Value == null || Value.Count == 0) {
+			return [
+				new IValidatable.ValidationResult(IValidatable.ResultType.FAIL, $"Value field for one \"LethalCompany:dungeon:name\" condition in SoundPack '{Pack.Name}' is empty or missing!")
+			];
+		}
+
+		return [];
 	}
 }

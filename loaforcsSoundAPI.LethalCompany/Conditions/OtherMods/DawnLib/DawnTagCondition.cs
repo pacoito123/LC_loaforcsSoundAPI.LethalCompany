@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Dawn;
 using JetBrains.Annotations;
+using loaforcsSoundAPI.Core.Data;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 
 namespace loaforcsSoundAPI.LethalCompany.Conditions.OtherMods.DawnLib;
@@ -30,5 +31,16 @@ public class DawnTagCondition<T>(Func<T> generator) : Condition where T : DawnBa
         }
 
         return true;
+    }
+
+    /// <inheritdoc/>
+    public override List<IValidatable.ValidationResult> Validate() {
+        if (Value == null || Value.Count == 0) {
+            return [
+                new IValidatable.ValidationResult(IValidatable.ResultType.FAIL, $"Value field for one DawnTagCondition of type '{typeof(T).GetType()}' in SoundPack '{Pack.Name}' is empty or missing!")
+            ];
+        }
+
+        return [];
     }
 }
