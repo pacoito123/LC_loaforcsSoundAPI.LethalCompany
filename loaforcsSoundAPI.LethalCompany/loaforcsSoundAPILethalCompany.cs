@@ -3,6 +3,7 @@ using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using loaforcsSoundAPI.LethalCompany.Compatibility;
+using loaforcsSoundAPI.LethalCompany.Patches;
 using loaforcsSoundAPI.LethalCompany.Reporting;
 using loaforcsSoundAPI.Reporting;
 
@@ -38,7 +39,18 @@ public class loaforcsSoundAPILethalCompany : BaseUnityPlugin {
 		// todo
 		// SoundFixesConfig.Bind(Config);
 
-		Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), MyPluginInfo.PLUGIN_GUID);
+		Harmony harmony = new(MyPluginInfo.PLUGIN_GUID);
+		harmony.PatchAll(typeof(ApparatusPatch));
+		harmony.PatchAll(typeof(AudioReverbTriggerPatch));
+		harmony.PatchAll(typeof(EnemyAIPatch));
+		harmony.PatchAll(typeof(GrabbableObjectPatch));
+		harmony.PatchAll(typeof(HangarShipDoorPatch));
+		harmony.PatchAll(typeof(ItemDropshipPatch));
+		harmony.PatchAll(typeof(PlayerControllerPatch));
+		harmony.PatchAll(typeof(RoundManagerPatch));
+		harmony.PatchAll(typeof(StartOfRoundPatch));
+		harmony.PatchAll(typeof(VehicleControllerPatch));
+
 		Config.Save();
 		Logger.LogInfo("Done.");
 	}
