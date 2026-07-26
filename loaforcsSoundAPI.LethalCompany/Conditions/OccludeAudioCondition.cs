@@ -4,7 +4,7 @@ namespace loaforcsSoundAPI.LethalCompany.Conditions;
 
 [SoundAPICondition("LethalCompany:occlude_audio")]
 public class OccludeAudioCondition : Condition {
-    public bool? Value { get; internal set; }
+    public bool? Value { get; private set; }
 
     /// <inheritdoc/>
     public override bool Evaluate(IContext context) {

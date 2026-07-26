@@ -6,7 +6,7 @@ namespace loaforcsSoundAPI.LethalCompany.Conditions.Dungeon;
 public class DungeonPowerStateCondition : Condition {
 	internal static bool CurrentPowerState = false;
 
-	public bool? Value { get; internal set; }
+	public bool? Value { get; private set; }
 
 	public override bool Evaluate(IContext context) {
 		return CurrentPowerState == (Value ?? true);

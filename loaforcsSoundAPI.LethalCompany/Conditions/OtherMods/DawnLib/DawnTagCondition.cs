@@ -10,10 +10,10 @@ public class DawnTagCondition<T>(Func<T> generator) : Condition where T : DawnBa
     [NonSerialized]
     readonly Func<T> _generator = generator;
 
-    public List<NamespacedKeyReference> Value { get; internal set; }
+    public List<NamespacedKeyReference> Value { get; private set; }
 
     [CanBeNull]
-    public bool? CheckAll { get; internal set; }
+    public bool? CheckAll { get; private set; }
 
     public override bool Evaluate(IContext context) {
         T content = _generator();

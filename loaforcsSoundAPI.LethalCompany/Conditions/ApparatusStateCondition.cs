@@ -12,9 +12,9 @@ public class ApparatusStateCondition : Condition {
 
 	readonly HashSet<AudioSource> exhaustedSources = [];
 
-	public StateType? Value { get; internal set; }
+	public StateType? Value { get; private set; }
 
-	public bool? OnceAfterPull { get; internal set; }
+	public bool? OnceAfterPull { get; private set; }
 
 	/// <inheritdoc/>
 	public override void OnRegistered() {

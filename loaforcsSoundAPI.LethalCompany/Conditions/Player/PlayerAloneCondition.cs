@@ -5,7 +5,7 @@ namespace loaforcsSoundAPI.LethalCompany.Conditions.Player;
 
 [SoundAPICondition("LethalCompany:player:is_alone")]
 public class PlayerAloneCondition : Condition<PlayerContext> {
-	public bool? Value { get; internal set; }
+	public bool? Value { get; private set; }
 
 	/// <inheritdoc/>
 	public override bool EvaluateWithContext(PlayerContext context) {

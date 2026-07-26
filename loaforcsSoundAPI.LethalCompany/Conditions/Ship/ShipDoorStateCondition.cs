@@ -10,7 +10,7 @@ namespace loaforcsSoundAPI.LethalCompany.Conditions.Ship;
 [SoundAPICondition("LethalCompany:ship:door_state")]
 public class ShipDoorStateCondition : Condition<ShipDoorContext> {
     [CanBeNull]
-    public bool? Closed { get; internal set; }
+    public bool? Closed { get; private set; }
 
     [CanBeNull]
     public string DoorPower { get; private set; }
@@ -21,7 +21,7 @@ public class ShipDoorStateCondition : Condition<ShipDoorContext> {
     }
     RangeOperator<float> _doorPowerRange;
 
-    public bool? Overheated { get; internal set; }
+    public bool? Overheated { get; private set; }
 
     /// <inheritdoc/>
     public override bool EvaluateWithContext(ShipDoorContext context) {

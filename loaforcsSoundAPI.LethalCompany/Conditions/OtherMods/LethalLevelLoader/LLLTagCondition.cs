@@ -10,10 +10,10 @@ public class LLLTagCondition<T>(Func<T> generator) : Condition where T : Extende
 	[NonSerialized]
 	readonly Func<T> _generator = generator;
 
-	public List<ContentTagReference> Value { get; internal set; }
+	public List<ContentTagReference> Value { get; private set; }
 
 	[CanBeNull]
-	public bool? CheckAll { get; internal set; }
+	public bool? CheckAll { get; private set; }
 
 	public override bool Evaluate(IContext context) {
 		T content = _generator();
