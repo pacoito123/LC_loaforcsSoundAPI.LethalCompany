@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using loaforcsSoundAPI.Core.Data;
 using loaforcsSoundAPI.LethalCompany.Conditions.Contexts;
 using loaforcsSoundAPI.SoundPacks.Conditions;
+using loaforcsSoundAPI.SoundPacks.Data;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 
 namespace loaforcsSoundAPI.LethalCompany.Conditions.Ship;

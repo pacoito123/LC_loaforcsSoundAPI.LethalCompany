@@ -16,15 +16,6 @@
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
-    <!-- Set NuGet Sources -->
-    <PropertyGroup>
-        <RestoreAdditionalProjectSources>
-            https://api.nuget.org/v3/index.json;
-            https://nuget.bepinex.dev/v3/index.json;
-            https://nuget.windows10ce.com/nuget/v3/index.json
-        </RestoreAdditionalProjectSources>
-    </PropertyGroup>
-
     <!-- Disable Publicizer Warnings -->
     <PropertyGroup>
         <NoWarn>$(NoWarn);CS0436</NoWarn>
