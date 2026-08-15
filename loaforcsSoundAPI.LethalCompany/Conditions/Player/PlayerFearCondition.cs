@@ -1,27 +1,17 @@
-using System.Collections.Generic;
 using JetBrains.Annotations;
-using loaforcsSoundAPI.Core.Data;
-using loaforcsSoundAPI.SoundPacks.Conditions;
 using loaforcsSoundAPI.SoundPacks.Data;
 using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 
 namespace loaforcsSoundAPI.LethalCompany.Conditions.Player;
 
 [SoundAPICondition("LethalCompany:player:fear")]
-public class PlayerFearCondition : RangeCondition<float> {
-    /// <inheritdoc/>
-    protected override RangeOperator<float> DefaultRange => new(0.0f, float.PositiveInfinity);
+public class PlayerFearCondition : Condition {
+    public RangeOperator<float> Value { get; private set; } = new(0.0f, float.PositiveInfinity);
 
     public bool? IsIncreasing { get; private set; } = null;
 
     [CanBeNull]
-    public string TimeSinceIncrease { get; private set; } = null;
-
-    public RangeOperator<float> TimeSinceIncreaseRange {
-        get => _timeSinceIncreaseRange;
-        private set => _timeSinceIncreaseRange = value;
-    }
-    RangeOperator<float> _timeSinceIncreaseRange;
+    public RangeOperator<float> TimeSinceIncrease { get; private set; } = new(0.0f, float.PositiveInfinity);
 
     /// <inheritdoc/>
     public override bool Evaluate(IContext context) {
@@ -30,25 +20,14 @@ public class PlayerFearCondition : RangeCondition<float> {
         if (!GameNetworkManager.Instance.localPlayerController) return false;
         if (GameNetworkManager.Instance.localPlayerController.isPlayerDead) return false;
 
-        bool result = EvaluateRangeOperator(StartOfRound.Instance.fearLevel);
+        bool result = Value.EvaluateRange(StartOfRound.Instance.fearLevel);
         if (result && IsIncreasing.HasValue) {
             result = StartOfRound.Instance.fearLevelIncreasing == IsIncreasing.Value;
         }
-        if (result && !string.IsNullOrEmpty(TimeSinceIncrease)) {
-            EvaluateRangeOperator(GameNetworkManager.Instance.localPlayerController.timeSinceFearLevelUp, TimeSinceIncreaseRange);
+        if (result && TimeSinceIncrease != null) {
+            TimeSinceIncrease.EvaluateRange(GameNetworkManager.Instance.localPlayerController.timeSinceFearLevelUp);
         }
 
         return result;
-    }
-
-    /// <inheritdoc/>
-    public override List<IValidatable.ValidationResult> Validate() {
-        return !string.IsNullOrEmpty(TimeSinceIncrease) && !ValidateRangeOperator(TimeSinceIncrease, out _timeSinceIncreaseRange,
-            out IValidatable.ValidationResult result) ? [result] : base.Validate();
-    }
-
-    /// <inheritdoc/>
-    protected override bool TryParseValue(string parameter, ref float value) {
-        return string.IsNullOrEmpty(parameter) || float.TryParse(parameter, out value);
     }
 }
