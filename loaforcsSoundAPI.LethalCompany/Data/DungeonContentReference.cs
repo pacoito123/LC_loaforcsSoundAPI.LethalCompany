@@ -19,8 +19,8 @@ public class DungeonContentReference : ContentReference<DungeonFlow> {
         if (RoundManager.Instance.dungeonFlowTypes == null) return false;
         if (string.IsNullOrEmpty(input)) return false;
 
-        value = Array.Find(RoundManager.Instance.dungeonFlowTypes, indoorMapType => indoorMapType?.dungeonFlow != null
-            && string.Equals(indoorMapType.dungeonFlow.name, input, StringComparison.InvariantCultureIgnoreCase))?.dungeonFlow;
+        value = Array.Find(RoundManager.Instance.dungeonFlowTypes, it => it?.dungeonFlow != null
+            && string.Equals(it.dungeonFlow.name, input, StringComparison.InvariantCultureIgnoreCase))?.dungeonFlow;
 
         return value != null;
     }

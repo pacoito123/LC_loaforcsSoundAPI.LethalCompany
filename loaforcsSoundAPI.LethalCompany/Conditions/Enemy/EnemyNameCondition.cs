@@ -13,6 +13,6 @@ public sealed class EnemyNameCondition : Condition<EnemyContext> {
     public override bool EvaluateWithContext(EnemyContext context) {
         if (!context.Enemy) return false;
 
-        return Value.Find(reference => reference.Value == context.Enemy.enemyType) != null;
+        return Value.Find(it => it.Value == context.Enemy.enemyType) != null;
     }
 }

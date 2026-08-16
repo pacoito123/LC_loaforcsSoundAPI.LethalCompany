@@ -13,7 +13,7 @@ namespace loaforcsSoundAPI.LethalCompany;
 [BepInDependency(SoundAPI.PLUGIN_GUID)]
 
 // Integrations
-[BepInDependency("imabatby.lethallevelloader", BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency(LethalLevelLoader.Plugin.ModGUID, BepInDependency.DependencyFlags.SoftDependency)]
 [BepInDependency("com.github.teamxiaolan.dawnlib", BepInDependency.DependencyFlags.SoftDependency)]
 public class loaforcsSoundAPILethalCompany : BaseUnityPlugin {
 	internal new static ManualLogSource Logger { get; private set; }

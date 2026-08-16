@@ -16,7 +16,7 @@ public class DungeonNameCondition : Condition {
 		if (!RoundManager.Instance) return false;
 		if (!RoundManager.Instance.dungeonGenerator) return false;
 
-		return Value.Find(static reference => reference.Value == RoundManager.Instance.dungeonGenerator.Generator?.DungeonFlow) != null;
+		return Value.Find(static it => it.Value == RoundManager.Instance.dungeonGenerator.Generator?.DungeonFlow) != null;
 	}
 
 	/// <inheritdoc/>

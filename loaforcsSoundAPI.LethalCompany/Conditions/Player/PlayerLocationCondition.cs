@@ -20,7 +20,7 @@ public class PlayerLocationCondition : Condition<PlayerContext> {
 			: context.Player.isInElevator ? LocationType.ON_SHIP
 			: LocationType.OUTSIDE;
 
-		return Value.FindIndex(reference => reference.Value == currentLocation) != -1;
+		return Value.FindIndex(it => it.Value == currentLocation) != -1;
 	}
 
 	/// <inheritdoc/>

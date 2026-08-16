@@ -22,7 +22,7 @@ public sealed class EnemyAnimatorCondition : AnimatorCondition<EnemyContext> {
 
         bool result = base.EvaluateWithContext(context);
         if (result && EnemyName != null) {
-            result = EnemyName.Find(reference => reference.Value == context.Enemy.enemyType) != null;
+            result = EnemyName.Find(it => it.Value == context.Enemy.enemyType) != null;
         }
 
         return result;

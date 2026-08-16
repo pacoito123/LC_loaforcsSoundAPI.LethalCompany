@@ -17,7 +17,7 @@ public class ShipStateCondition : Condition {
 			: StartOfRound.Instance.shipHasLanded ? ShipStateType.LANDED
 			: ShipStateType.LANDING;
 
-		return Value.FindIndex(reference => reference.Value == currentShipState) != -1;
+		return Value.FindIndex(it => it.Value == currentShipState) != -1;
 	}
 
 	/// <inheritdoc/>

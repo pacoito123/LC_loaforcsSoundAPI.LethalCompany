@@ -16,7 +16,7 @@ public class PlayerHeldItemCondition : Condition<PlayerContext> {
         if (!context.Player.currentlyHeldObjectServer) return false;
         if (context.Player.isPlayerDead) return false;
 
-        return Value.Find(reference => reference.Value == context.Player.currentlyHeldObjectServer.itemProperties) != null;
+        return Value.Find(it => it.Value == context.Player.currentlyHeldObjectServer.itemProperties) != null;
     }
 
     /// <inheritdoc/>

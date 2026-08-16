@@ -18,8 +18,7 @@ public class FootstepSurfaceContentReference : ContentReference<int> {
         if (StartOfRound.Instance.footstepSurfaces == null) return false;
         if (string.IsNullOrEmpty(input)) return false;
 
-        value = Array.FindIndex(StartOfRound.Instance.footstepSurfaces, surface => surface != null
-            && string.Equals(surface.surfaceTag, input, StringComparison.InvariantCultureIgnoreCase));
+        value = Array.FindIndex(StartOfRound.Instance.footstepSurfaces, it => string.Equals(it?.surfaceTag, input, StringComparison.InvariantCultureIgnoreCase));
 
         return value != -1;
     }

@@ -14,7 +14,7 @@ public class PlayerStandingOnCondition : Condition<PlayerContext> {
 	public override bool EvaluateWithContext(PlayerContext context) {
 		if (!context.Player) return false;
 
-		return Value.Find(reference => reference.Value == context.Player.currentFootstepSurfaceIndex) != null;
+		return Value.Find(it => it.Value == context.Player.currentFootstepSurfaceIndex) != null;
 	}
 
 	/// <inheritdoc/>

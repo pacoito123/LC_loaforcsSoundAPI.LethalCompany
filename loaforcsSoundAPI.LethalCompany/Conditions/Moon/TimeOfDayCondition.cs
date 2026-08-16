@@ -15,7 +15,7 @@ public class TimeOfDayCondition : Condition {
 		if (SceneManager.loadedSceneCount <= 1) return false;
 		if (!TimeOfDay.Instance) return false;
 
-		return Value.FindIndex(static reference => reference.Value == TimeOfDay.Instance.dayMode) != -1;
+		return Value.FindIndex(static it => it.Value == TimeOfDay.Instance.dayMode) != -1;
 	}
 
 	/// <inheritdoc/>

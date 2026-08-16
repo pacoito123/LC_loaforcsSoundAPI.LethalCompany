@@ -18,8 +18,8 @@ public class MoonContentReference : ContentReference<SelectableLevel> {
         if (StartOfRound.Instance.levels == null) return false;
         if (string.IsNullOrEmpty(input)) return false;
 
-        value = Array.Find(StartOfRound.Instance.levels, level => level != null &&
-            string.Equals(level.name, input, StringComparison.InvariantCultureIgnoreCase));
+        value = Array.Find(StartOfRound.Instance.levels, it => it != null &&
+            string.Equals(it.name, input, StringComparison.InvariantCultureIgnoreCase));
 
         return value != null;
     }

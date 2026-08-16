@@ -6,7 +6,7 @@ using loaforcsSoundAPI.SoundPacks.Data.Conditions;
 
 namespace loaforcsSoundAPI.LethalCompany.Conditions.Ship;
 
-[SoundAPICondition("LethalCompany:ship:delivery")]
+[SoundAPICondition("LethalCompany:dropship:state")]
 public class ShipDeliveryCondition : Condition<DropshipContext> {
     public List<EnumReference<DropshipStateType>> Value { get; private set; }
 
@@ -21,7 +21,7 @@ public class ShipDeliveryCondition : Condition<DropshipContext> {
             : context.Dropship.untetheredVehicle ? DropshipStateType.DROPPED_VEHICLE
             : DropshipStateType.LEAVING;
 
-        return Value.FindIndex(reference => reference.Value == currentDropshipState) != -1;
+        return Value.FindIndex(it => it.Value == currentDropshipState) != -1;
     }
 
     /// <inheritdoc/>

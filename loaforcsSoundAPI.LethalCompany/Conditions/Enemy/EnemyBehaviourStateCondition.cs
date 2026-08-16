@@ -21,7 +21,7 @@ public class EnemyBehaviourStateCondition : Condition<EnemyContext> {
 
         bool result = Value.EvaluateRange(context.Enemy.currentBehaviourStateIndex);
         if (result && EnemyName != null) {
-            result = EnemyName.Find(reference => reference.Value == context.Enemy.enemyType) != null;
+            result = EnemyName.Find(it => it.Value == context.Enemy.enemyType) != null;
         }
 
         return result;

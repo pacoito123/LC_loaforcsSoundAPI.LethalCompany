@@ -21,7 +21,7 @@ public class VehicleRidingCondition : Condition<VehicleContext> {
             : context.Vehicle.physicsRegion.hasLocalPlayer ? RiderType.IN_BACK // TODO: Can match while on top or at the front.
             : RiderType.NONE;
 
-        return Value.FindIndex(reference => reference.Value == currentRiderType) != -1;
+        return Value.FindIndex(it => it.Value == currentRiderType) != -1;
     }
 
     /// <inheritdoc/>

@@ -19,10 +19,7 @@ public class ApparatusStateCondition : Condition {
 	public bool? OnceAfterPull { get; private set; }
 
 	/// <inheritdoc/>
-	public override void OnRegistered() {
-		SceneManager.sceneUnloaded -= ResetApparatusState;
-		SceneManager.sceneUnloaded += ResetApparatusState;
-	}
+	public override void OnRegistered() => SceneManager.sceneUnloaded += ResetApparatusState;
 
 	void ResetApparatusState(Scene scene) {
 		CurrentApparatusState = StateType.PLUGGED_IN;
@@ -34,7 +31,8 @@ public class ApparatusStateCondition : Condition {
 		bool result = Value == CurrentApparatusState;
 
 		if (result && OnceAfterPull.HasValue) {
-			result = exhaustedSources.Add(context.Source);
+			result = !exhaustedSources.Contains(context.Source);
+			exhaustedSources.Add(context.Source);
 		}
 
 		return result;

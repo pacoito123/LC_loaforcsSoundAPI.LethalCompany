@@ -16,7 +16,7 @@ public class WeatherNameCondition : Condition {
         if (!StartOfRound.Instance) return false;
         if (!StartOfRound.Instance.currentLevel) return false;
 
-        return Value.FindIndex(reference => reference.Value == StartOfRound.Instance.currentLevel.currentWeather) != -1;
+        return Value.FindIndex(it => it.Value == StartOfRound.Instance.currentLevel.currentWeather) != -1;
     }
 
 	/// <inheritdoc/>

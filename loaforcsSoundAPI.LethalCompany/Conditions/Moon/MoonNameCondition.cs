@@ -15,7 +15,7 @@ public class MoonNameCondition : Condition {
 		if (SceneManager.loadedSceneCount <= 1) return false;
 		if (!StartOfRound.Instance) return false;
 
-		return Value.Find(reference => reference.Value == StartOfRound.Instance.currentLevel) != null;
+		return Value.Find(it => it.Value == StartOfRound.Instance.currentLevel) != null;
 	}
 
 	/// <inheritdoc/>

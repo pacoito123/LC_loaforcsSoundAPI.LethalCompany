@@ -15,7 +15,7 @@ public class ItemNameCondition : Condition<ItemContext> {
     public override bool EvaluateWithContext(ItemContext context) {
         if (!context.Item) return false;
 
-        return Value.Find(reference => reference.Value == context.Item.itemProperties) != null;
+        return Value.Find(it => it.Value == context.Item.itemProperties) != null;
     }
 
 	/// <inheritdoc/>
